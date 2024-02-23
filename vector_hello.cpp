@@ -13,11 +13,11 @@ void vector_hello(){
         std::cin >> vectorTest[i];
     }
 
-    std::cout << "scr vector: " << vector2string(vectorTest, " ") << endl;
+    std::cout << "scr vector: " << vector2string(vectorTest, " ") << std::endl;
 
     vectorTest.pop_back();
 
-    std::cout << "pop back vector: " << vector2string(vectorTest, " ");
+    std::cout << "pop back vector: " << vector2string(vectorTest, " ") << std::endl;
 
 }
 
