@@ -1,2 +1,7 @@
 main
 a.out
+build/Debug/main.o
+build/Debug/outDebug
+build/Debug/print_array.o
+build/Debug/var_array.o
+build/Debug/vector_hello.o

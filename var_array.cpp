@@ -3,8 +3,8 @@
 
 void var_array(){
 
-    int arraysCnt = 0;
-    int querysCnt = 0;
+    long unsigned int arraysCnt = 0;
+    long unsigned int querysCnt = 0;
 
     std::cout << "input arrays count and queries count (split space): ";
     std::cin >> arraysCnt;
@@ -14,7 +14,7 @@ void var_array(){
     int arraysElementCnt[arraysCnt];
     int results[querysCnt];
 
-    for (int i=0; i<arraysCnt; ++i){
+    for (long unsigned int i=0; i<arraysCnt; ++i){
 
         std::cout << "input (split by space) values_cnt values: ";
         std::cin >> arraysElementCnt[i];
@@ -25,7 +25,7 @@ void var_array(){
         }
     }
 
-    for (int i=0; i<querysCnt; ++i){
+    for (long unsigned int i=0; i<querysCnt; ++i){
         int x;
         int y;
         std::cout << "input coordinates (split space): ";
@@ -34,11 +34,11 @@ void var_array(){
         results[i] = arrayPtrs[x][y];
     }
 
-    for (int i=0; i<querysCnt; ++i){
+    for (long unsigned int i=0; i<querysCnt; ++i){
         std::cout << results[i] << std::endl;
     }
 
-    for (int i=0; i<arraysCnt; ++i){
+    for (long unsigned int i=0; i<arraysCnt; ++i){
         delete(arrayPtrs[i]);
     }
 

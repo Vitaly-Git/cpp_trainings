@@ -3,14 +3,14 @@
 
 void printArray(){
 
-    int arraySize = 0;
+    long unsigned int arraySize = 0;
 
     std::cout << "input array size: ";
     std::cin >> arraySize;
     int array[arraySize];
 
     std::cout << "input array elements separate by space: ";
-    for (int i=0; i<arraySize; ++i)
+    for (long unsigned int i=0; i<arraySize; ++i)
         std::cin >> array[i];
 
     for (int i=arraySize-1; i>=0; --i){
