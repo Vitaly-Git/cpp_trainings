@@ -3,10 +3,12 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
-#include "printArray.hpp"
+#include "print_array.hpp"
+#include "var_array.hpp"
 
 int main(){
-    printArray();
+    var_array();
+    //printArray();
     //printNumbersAsText();
     return 0;
 }

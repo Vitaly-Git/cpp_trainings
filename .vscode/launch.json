@@ -1,6 +1,6 @@
 {
     "configurations": [
-        
+
         {
             "name": "(gdb) Launch",
             "type": "cppdbg",
@@ -48,7 +48,8 @@
             "name": "C/C++: g++ build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/${fileBasenameNoExtension}",
+            // "program": "${fileDirname}/${fileBasenameNoExtension}",
+            "program": "${fileDirname}/a.out",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

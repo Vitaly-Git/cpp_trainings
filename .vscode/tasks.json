@@ -34,6 +34,22 @@
                 "${file}",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
+                // "-g",
+                // "$(find",
+                // "code",
+                // "-type",
+                // "f",
+                // "-iregex",
+                // "'.*\\.cpp')",
+                // "-o",
+                // "${fileDirname}/${fileBasenameNoExtension}"
+                // "-I",
+                // "${fileDirname}",
+                // "-g",
+                // "${fileDirname}/*.cpp",
+                // "-o",
+                // "${fileDirname}/${fileBasenameNoExtension}"
+
             ],
             "options": {
                 "cwd": "${fileDirname}"
