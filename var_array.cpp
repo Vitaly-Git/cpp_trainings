@@ -37,4 +37,9 @@ void var_array(){
     for (int i=0; i<querysCnt; ++i){
         std::cout << results[i] << std::endl;
     }
+
+    for (int i=0; i<arraysCnt; ++i){
+        delete(arrayPtrs[i]);
+    }
+
 }
