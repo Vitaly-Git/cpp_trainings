@@ -5,3 +5,5 @@ build/Debug/outDebug
 build/Debug/print_array.o
 build/Debug/var_array.o
 build/Debug/vector_hello.o
+build/Debug/Interval.o
+build/Debug/merge_interval_ya_1.o

@@ -33,7 +33,7 @@
     "/w44265",
     "/w14928"
   ],
-  "C_Cpp_Runner.enableWarnings": true,
+  "C_Cpp_Runner.enableWarnings": false,
   "C_Cpp_Runner.warningsAsError": false,
   "C_Cpp_Runner.compilerArgs": [],
   "C_Cpp_Runner.linkerArgs": [],
@@ -101,5 +101,12 @@
     "stdexcept": "cpp",
     "streambuf": "cpp",
     "typeinfo": "cpp"
-  }
+  },
+  "makefile.launchConfigurations": [
+    {
+      "cwd": "/home/vboxuser/projects/c_hello_world",
+      "binaryPath": "/home/vboxuser/projects/c_hello_world/a.out",
+      "binaryArgs": []
+    }
+  ]
 }
