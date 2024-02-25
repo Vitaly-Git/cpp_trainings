@@ -1,4 +1,4 @@
-#include "merge_interval_ya_1.hpp"
+#include "merge_interval_ya.hpp"
 
 
 void merger_vector_intervals_start(){
