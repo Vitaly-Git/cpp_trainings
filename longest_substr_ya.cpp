@@ -32,7 +32,7 @@ std::string longestSubstr(std::string srcStr){
                 curStrSymbols.clear();
                 curSubStr = "";
                 curSubStrLen = 0;
-                break;;           
+                break;           
             }
 
         }
