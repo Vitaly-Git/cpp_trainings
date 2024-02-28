@@ -1,6 +1,7 @@
 #include "testing.hpp"
 #include "longest_substr_ya.hpp"
 #include "twoSum.hpp"
+#include "romanToInt.hpp"
 
 void test_longestSubstr(){
     assert(longestSubstr("dabcbaddc") == "dabc");
@@ -35,4 +36,17 @@ void test_twoSum(){
     }    
 
     std::cout << "Ok test_twoSum" << std::endl;
+}
+
+void test_romanToInt(){
+
+    Solution_romanToInt sl;
+
+    assert(sl.romanToInt("III") == 3);
+    assert(sl.romanToInt("LVIII") == 58);
+    assert(sl.romanToInt("MCMXCIV") == 1994);
+    assert(sl.romanToInt("DCXXI") == 621);
+
+    // std::string str;
+    // std::getline(std::cin, str);
 }

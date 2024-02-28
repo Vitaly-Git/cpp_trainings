@@ -13,6 +13,7 @@
 
 
 int main(){
+    test_romanToInt();
     test_twoSum();
     // test_longestSubstr();
     //longestSubstrExecute();
