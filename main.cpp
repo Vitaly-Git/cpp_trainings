@@ -9,12 +9,11 @@
 #include "merge_interval_ya.hpp"
 #include "longest_substr_ya.hpp"
 #include "testing.hpp"
-#include "twoSum.hpp"
-
 
 int main(){
-    test_romanToInt();
-    test_twoSum();
+    test_isPalindrome();
+    // test_romanToInt();
+    // test_twoSum();
     // test_longestSubstr();
     //longestSubstrExecute();
     //merger_vector_intervals_start();

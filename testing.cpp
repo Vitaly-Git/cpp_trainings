@@ -1,7 +1,8 @@
 #include "testing.hpp"
 #include "longest_substr_ya.hpp"
-#include "twoSum.hpp"
-#include "romanToInt.hpp"
+#include "two_sum.hpp"
+#include "roman_to_int.hpp"
+#include "palindrome_number.hpp"
 
 void test_longestSubstr(){
     assert(longestSubstr("dabcbaddc") == "dabc");
@@ -49,4 +50,27 @@ void test_romanToInt(){
 
     // std::string str;
     // std::getline(std::cin, str);
+}
+
+void test_isPalindrome(){
+
+    SolutioniIsPalindrome sl;
+
+    assert(sl.isPalindrome(9999) == true);
+    assert(sl.isPalindrome(0) == true);
+    assert(sl.isPalindrome(7) == true);
+    assert(sl.isPalindrome(11) == true);    
+    assert(sl.isPalindrome(121) == true);
+    assert(sl.isPalindrome(-121) == false);
+    assert(sl.isPalindrome(10) == false);
+    assert(sl.isPalindrome(1234567899) == false);
+    assert(sl.isPalindrome(10000001) == true);
+    assert(sl.isPalindrome(1001) == true);
+    assert(sl.isPalindrome(10101) == true);
+
+    assert(sl.isPalindrome(7) == true);
+    assert(sl.isPalindrome(12) == false);
+    assert(sl.isPalindrome(76567) == true);
+
+    std::cout << "OK " << __func__ << std::endl;
 }
