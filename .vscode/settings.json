@@ -103,7 +103,10 @@
     "typeinfo": "cpp",
     "map": "cpp",
     "set": "cpp",
-    "bitset": "cpp"
+    "bitset": "cpp",
+    "ctime": "cpp",
+    "iomanip": "cpp",
+    "sstream": "cpp"
   },
   "makefile.launchConfigurations": [
     {
