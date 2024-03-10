@@ -96,16 +96,24 @@ class ConnectedList{
             delete itemToDelete;
         }
 
-        // void reverse(){
+        void reverse(){
+            if (head == nullptr)
+                return;
 
-        //     ListItem* 
+            ListItem* prevItem = nullptr;
+            ListItem* curItem = head;
+            ListItem* nextItem = head->getNext();
+            while(nextItem!=nullptr){
+                ListItem* nextNextItem = nextItem->getNext();
+                nextItem->setNext(curItem);
+                curItem->setNext(prevItem);
+                prevItem = curItem;
+                curItem = nextItem;
+                nextItem = nextNextItem;
+            }
 
-        //     ListItem* next;
-        //     while(next!=nullptr){
-
-        //     }
-
-        // }
+            head = curItem;
+        }
 
         // std::string to_string(){
         operator std::string() const{
@@ -164,6 +172,24 @@ void connectedListTest(){
     cl.deleteItem(1);
     cl.deleteItem(3);
     assert(std::string(cl) == "");
+    
+    cl.reverse();
+    assert(std::string(cl) == "");
+
+    cl.addItem(1);
+    cl.reverse();
+    assert(std::string(cl) == "1");
+
+    cl.addItem(2);
+    assert(std::string(cl) == "1 2");
+    cl.reverse();
+    assert(std::string(cl) == "2 1");
+
+    cl.deleteItem(1);
+    assert(std::string(cl) == "2");
+
+    cl.deleteItem(2);
+    assert(std::string(cl) == "");
 
     cl.addItem(0);
     cl.addItem(1);
@@ -172,8 +198,8 @@ void connectedListTest(){
     cl.addItem(4);
     assert(std::string(cl) == "0 1 2 3 4");
 
-    // cl.reverse();
-    // assert(std::string(cl) == "4 3 2 1 0");
+    cl.reverse();
+    assert(std::string(cl) == "4 3 2 1 0");
 
     std::cout << "OK connectedListTest" << std::endl;
 }
