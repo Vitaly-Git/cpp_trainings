@@ -106,7 +106,8 @@
     "bitset": "cpp",
     "ctime": "cpp",
     "iomanip": "cpp",
-    "sstream": "cpp"
+    "sstream": "cpp",
+    "list": "cpp"
   },
   "makefile.launchConfigurations": [
     {
