@@ -1,6 +1,5 @@
 {
   "configurations": [
-    
     {
       "name": "(gdb) Launch",
       "type": "cppdbg",
@@ -32,8 +31,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "${fileDirname}",
-      "program": "${fileDirname}/${fileBasenameNoExtension}",
+      "cwd": "/home/vboxuser/projects/c_hello_world/ya_alg/ya_alg_add",
+      "program": "/home/vboxuser/projects/c_hello_world/ya_alg/ya_alg_add/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
