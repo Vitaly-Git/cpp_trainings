@@ -31,8 +31,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/vboxuser/projects/c_hello_world/ya_alg/moving_average",
-      "program": "/home/vboxuser/projects/c_hello_world/ya_alg/moving_average/build/Debug/outDebug",
+      "cwd": "/home/vboxuser/projects/c_hello_world/ya_alg/10_moving_average",
+      "program": "/home/vboxuser/projects/c_hello_world/ya_alg/10_moving_average/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
