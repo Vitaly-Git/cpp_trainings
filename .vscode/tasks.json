@@ -2,7 +2,7 @@
     "tasks": [
         {
             "type": "cppbuild",
-            "label": "C/C++: gcc build active file",
+            "label": "C/C++: gcc build active file pg",
             "command": "/usr/bin/gcc",
             "args": [
                 "-fdiagnostics-color=always",
@@ -33,7 +33,6 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
-                "-lpqxx -lpq",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],
@@ -54,7 +53,6 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
-                "-lpqxx -lpq",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],

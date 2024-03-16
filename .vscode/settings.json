@@ -108,7 +108,9 @@
     "iomanip": "cpp",
     "sstream": "cpp",
     "list": "cpp",
-    "pqxx": "cpp"
+    "pqxx": "cpp",
+    "ranges": "cpp",
+    "span": "cpp"
   },
   "makefile.launchConfigurations": [
     {
