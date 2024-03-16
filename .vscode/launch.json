@@ -31,8 +31,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/vboxuser/projects/c_hello_world/ya_alg/9_ya_alg_vec_ordered_merge",
-      "program": "/home/vboxuser/projects/c_hello_world/ya_alg/9_ya_alg_vec_ordered_merge/build/Debug/outDebug",
+      "cwd": "/home/vboxuser/projects/c_hello_world/ya_alg/moving_average",
+      "program": "/home/vboxuser/projects/c_hello_world/ya_alg/moving_average/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
