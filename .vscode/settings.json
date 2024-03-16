@@ -110,7 +110,15 @@
     "list": "cpp",
     "pqxx": "cpp",
     "ranges": "cpp",
-    "span": "cpp"
+    "span": "cpp",
+    "charconv": "cpp",
+    "chrono": "cpp",
+    "codecvt": "cpp",
+    "cstring": "cpp",
+    "optional": "cpp",
+    "ratio": "cpp",
+    "source_location": "cpp",
+    "variant": "cpp"
   },
   "makefile.launchConfigurations": [
     {
