@@ -118,7 +118,8 @@
     "optional": "cpp",
     "ratio": "cpp",
     "source_location": "cpp",
-    "variant": "cpp"
+    "variant": "cpp",
+    "fstream": "cpp"
   },
   "makefile.launchConfigurations": [
     {
