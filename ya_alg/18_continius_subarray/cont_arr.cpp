@@ -4,7 +4,7 @@
 #include <cassert>
 #include <cmath>
 
-int64_t subArrLen(std::vector<int32_t> srcVector);
+int64_t subArrLen(const std::vector<int32_t>& srcVector);
 void subArrLenTest();
 
 int main(){
@@ -23,7 +23,7 @@ void subArrLenTest(){
     std::cout << "OK subArrLenTest" << std::endl;
 }
 
-int64_t subArrLen(std::vector<int32_t> srcVector){
+int64_t subArrLen(const std::vector<int32_t>& srcVector){
 
     int64_t maxLen = 0;
     std::map<int64_t, int64_t> prevPosesSym;
