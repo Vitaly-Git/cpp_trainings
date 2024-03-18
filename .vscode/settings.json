@@ -119,7 +119,8 @@
     "ratio": "cpp",
     "source_location": "cpp",
     "variant": "cpp",
-    "fstream": "cpp"
+    "fstream": "cpp",
+    "thread": "cpp"
   },
   "makefile.launchConfigurations": [
     {
