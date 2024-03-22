@@ -1,9 +1,15 @@
-// Описание алгоритма решения задачи
-// 1. Сложность решения O(N), т.к. все числа аналиируем за один обход цикла
-// 2. Вектор обходим с двух противоположных сторон
-// 3. Обход с двух сторон необходим для поиска наименьших расстояний слева и справа
-// 4. С каждой стороны перемещаем два индикатора: положение нуля и текущая цифра
-// 5. Для включения режима тестирования необходимо определить макрос UNIT_TESTING
+// Ссылка на отчёт в контесте:
+// https://contest.yandex.ru/contest/22450/run-report/110318346/
+//
+// Описание принципов и алгоритма решения задачи:
+// 1. Сложность решения O(N), т.к. все числа анализируем за один обход цикла.
+// 2. Вектор обходим с двух противоположных сторон.
+// 3. Обход с двух сторон необходим для поиска наименьших расстояний слева и справа.
+// 4. С каждой стороны перемещаем два указателя: положение нуля и текущая цифра.
+// 5. Минимальные расстояния запоминаем в результирующем векторе.
+// 6. Результирующий вектор передается как переметр по ссылке для оптимизации решения.
+// 7. Для включения режима тестирования необходимо определить макрос UNIT_TESTING.
+// 8. Сборка программы может быть выполнена с помощью ./make
 
 //#define UNIT_TESTING
 
@@ -18,6 +24,9 @@ typedef std::vector<int32_t> vec32_t;
 void getVectorZeroDist(const vec32_t& vecHouseNums, vec32_t& vecZeroDist);
 int getVectorZeroDistTest();
 bool checkDist(const vec32_t& vecHouseNums, const vec32_t& vecZeroDistPlan);
+
+template <typename T>
+void vectorCout(const T& vector);
 
 int main(){
 
@@ -35,12 +44,7 @@ int main(){
     vec32_t vecZeroDist(n);
     getVectorZeroDist(vecHouseNums, vecZeroDist);
 
-    for(auto it=vecZeroDist.begin(); it!=vecZeroDist.end(); ++it){
-        if (it!=vecZeroDist.begin()){
-            std::cout << " ";
-        }
-        std::cout << *it;
-    }
+    vectorCout(vecZeroDist);
 
     return 0;
 }
@@ -96,5 +100,15 @@ void getVectorZeroDist(const vec32_t& vecHouseNums, vec32_t& vecZeroDist){
 
         ++leftHousePtrNum;
         --rightHousePtrNum;
+    }
+}
+
+template <typename T>
+void vectorCout(const T& vector){
+    for(auto it=vector.begin(); it!=vector.end(); ++it){
+        if (it!=vector.begin()){
+            std::cout << " ";
+        }
+        std::cout << *it;
     }
 }
