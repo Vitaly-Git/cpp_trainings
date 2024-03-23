@@ -8,10 +8,14 @@ class Figure{
         ~Figure() noexcept(false){
             throw std::runtime_error("class creation error");
         }
+        std::string comment;
     private:
         int dims=0;
 };
 
+struct FigureStruct{
+    std::string comment;
+};
 
 int main(){
 
@@ -23,6 +27,13 @@ int main(){
     }catch(const std::exception& e){
         std::cout << e.what() << std::endl;
     }
+
+    delete fig;
+
+    // fig = new Figure("Test");
+
+    // FigureStruct* fg = new FigureStruct("Qube");
+
 
     return 0;
 }
