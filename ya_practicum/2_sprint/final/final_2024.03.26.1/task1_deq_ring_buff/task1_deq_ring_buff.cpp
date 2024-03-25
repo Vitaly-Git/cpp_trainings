@@ -1,6 +1,6 @@
 /*
 Ссылка на отчёт в контесте:
-https://contest.yandex.ru/contest/22781/run-report/110607679/
+https://contest.yandex.ru/contest/22781/run-report/110480723/
 
 -- ПРИНЦИП РАБОТЫ --
 1. Очередь реализована на кольцевом буфере.
@@ -50,17 +50,19 @@ https://contest.yandex.ru/contest/22781/run-report/110607679/
 #include <iostream>
 #include <vector>
 #include <cassert>
-#include <optional>
 
 //#define UNIT_TESTING
 
+typedef std::string OperationResult;
+
 int deqTest();
+
 class IDequeueLowLevelInt16DataStorage{
     public:
-        virtual bool push_back(int16_t value) = 0;
-        virtual bool push_front(int16_t value) = 0;
-        virtual std::optional<int16_t> pop_back() = 0;
-        virtual std::optional<int16_t> pop_front() = 0;
+        virtual OperationResult push_back(int16_t value) = 0;
+        virtual OperationResult push_front(int16_t value) = 0;
+        virtual OperationResult pop_back() = 0;
+        virtual OperationResult pop_front() = 0;
 };
 
 class RingBuffer : public IDequeueLowLevelInt16DataStorage{
@@ -83,57 +85,73 @@ class RingBuffer : public IDequeueLowLevelInt16DataStorage{
         bool isFull(){
             return size==maxSize;
         }
-        bool push_back(int16_t value) override{
-            bool result = false;
+        OperationResult push_back(int16_t value){
+            OperationResult operationResult = "";
             
             if (isFull()){
-                result = false;
+                operationResult = "error";
             }else{
-                result = true;
+                operationResult = "";
                 buffer[tail] = value;
                 tail = (tail+1) % maxSize;
                 ++size;
             }
-            return result;
+            
+            if (operationResult!="")
+                std::cout << operationResult << "\n";
+
+            return operationResult;
         };
-        bool push_front(int16_t value) override{
-            bool result = false;
+        OperationResult push_front(int16_t value){
+            OperationResult operationResult = "";
 
             if (isFull()){
-                result = false;
+                operationResult = "error";
             }else{
-                result = true;
+                operationResult = "";
                 head = (head==0?maxSize-1:head-1) % maxSize;
                 buffer[head] = value;
                 ++size;
             }
-            return result;
+
+            if (operationResult!="")
+                std::cout << operationResult << "\n";
+                
+            return operationResult;
         };
-        std::optional<int16_t> pop_back() override{
-            std::optional<int16_t> result = std::nullopt;
+        OperationResult pop_back(){
+            OperationResult operationResult = "";
 
             if (isEmpty()){
-                result = std::nullopt;
+                operationResult = "error";
             }else{
                 tail = (tail==0?maxSize-1:tail-1) % maxSize;
-                result = buffer[tail];
+                operationResult = std::to_string(buffer[tail]);
                 buffer[tail] = 0;
                 --size;
             }
-            return result;
+
+            if (operationResult!="")
+                std::cout << operationResult << "\n";
+                
+            return operationResult;
         };
-        std::optional<int16_t> pop_front() override{
-            std::optional<int16_t> result = std::nullopt;
+        OperationResult pop_front(){
+            OperationResult operationResult = "";
 
             if (isEmpty()){
-                result = std::nullopt;
+                operationResult = "error";
             }else{
-                result = buffer[head];
+                operationResult = std::to_string(buffer[head]);
                 buffer[head] = 0;
                 head = (head+1) % maxSize;
                 --size;
             }
-            return result;
+
+            if (operationResult!="")
+                std::cout << operationResult << "\n";
+                
+            return operationResult;
         };        
 };
 
@@ -150,16 +168,16 @@ class Dequeue{
         virtual ~Dequeue(){
             delete dataStorageInt16;
         }
-        bool push_back(int16_t value){
+        OperationResult push_back(int16_t value){
             return dataStorageInt16->push_back(value);
         };
-        bool push_front(int16_t value){
+        OperationResult push_front(int16_t value){
             return dataStorageInt16->push_front(value);
         };
-        std::optional<int16_t> pop_back(){
+        OperationResult pop_back(){
             return dataStorageInt16->pop_back();
         };
-        std::optional<int16_t> pop_front(){
+        OperationResult pop_front(){
             return dataStorageInt16->pop_front();
         };
 };
@@ -183,33 +201,16 @@ int main(){
 
         std::cin >> command;
 
-        if (command == "pop_back"){
-
-            std::optional<int16_t> res = dq.pop_back();
-            if(res)
-                std::cout << res.value() << "\n";
-            else
-                std::cout << "error" << "\n";
-
-        }else if (command == "pop_front"){
-            
-            std::optional<int16_t> res = dq.pop_front();
-            if(res)
-                std::cout << res.value() << "\n";
-            else
-                std::cout << "error" << "\n";
-
-        }else if (command == "push_back"){
-
+        if (command == "pop_back")
+            dq.pop_back();
+        else if (command == "pop_front")
+            dq.pop_front();
+        else if (command == "push_back"){
             std::cin >> commandArg;
-            if (!dq.push_back(commandArg))
-                std::cout << "error" << "\n";
-
+            dq.push_back(commandArg);
         }else if (command == "push_front"){
-
             std::cin >> commandArg;
-            if (!dq.push_front(commandArg))
-                std::cout << "error" << "\n";
+            dq.push_front(commandArg);
         }
     }
 
@@ -221,59 +222,59 @@ int deqTest(){
     Dequeue* dqTest;
 
     dqTest = new Dequeue(4);
-    assert(dqTest->push_front(861) == true);
-    assert(dqTest->push_front(-819) == true);
-    assert(dqTest->pop_back() == 861);
-    assert(dqTest->pop_back() == -819);
+    assert(dqTest->push_front(861) == "");
+    assert(dqTest->push_front(-819) == "");
+    assert(dqTest->pop_back() == "861");
+    assert(dqTest->pop_back() == "-819");
     delete dqTest;
 
     dqTest = new Dequeue(10);
-    assert(dqTest->push_front(-855) == true);
-    assert(dqTest->push_front(0) == true);
-    assert(dqTest->pop_back() == -855);
-    assert(dqTest->pop_back() == 0);
-    assert(dqTest->push_back(844) == true);
-    assert(dqTest->pop_back() == 844);
-    assert(dqTest->push_back(823) == true);
+    assert(dqTest->push_front(-855) == "");
+    assert(dqTest->push_front(0) == "");
+    assert(dqTest->pop_back() == "-855");
+    assert(dqTest->pop_back() == "0");
+    assert(dqTest->push_back(844) == "");
+    assert(dqTest->pop_back() == "844");
+    assert(dqTest->push_back(823) == "");
     delete dqTest;    
 
     dqTest = new Dequeue(6);
-    assert(dqTest->push_front(-201) == true);
-    assert(dqTest->push_back(959) == true);
-    assert(dqTest->push_back(102) == true);
-    assert(dqTest->push_front(20) == true);
-    assert(dqTest->pop_front() == 20);
-    assert(dqTest->pop_back() == 102);
+    assert(dqTest->push_front(-201) == "");
+    assert(dqTest->push_back(959) == "");
+    assert(dqTest->push_back(102) == "");
+    assert(dqTest->push_front(20) == "");
+    assert(dqTest->pop_front() == "20");
+    assert(dqTest->pop_back() == "102");
     delete dqTest; 
 
     dqTest = new Dequeue(0);
-    assert(dqTest->push_front(1) == false);
-    assert(dqTest->push_back(2) == false);
-    assert((bool)dqTest->pop_front() == false);
-    assert((bool)dqTest->pop_back() == false);
+    assert(dqTest->push_front(1) == "error");
+    assert(dqTest->push_back(2) == "error");
+    assert(dqTest->pop_front() == "error");
+    assert(dqTest->pop_back() == "error");
     delete dqTest;
 
     dqTest = new Dequeue(1);
-    assert(dqTest->push_front(1) == true);
-    assert(dqTest->push_back(2) == false);
-    assert(dqTest->pop_front() == 1);
-    assert((bool)dqTest->pop_back() == false);
+    assert(dqTest->push_front(1) == "");
+    assert(dqTest->push_back(2) == "error");
+    assert(dqTest->pop_front() == "1");
+    assert(dqTest->pop_back() == "error");
     delete dqTest;
 
     dqTest = new Dequeue(1);
-    assert(dqTest->push_back(1) == true);
-    assert(dqTest->push_front(2) == false);
-    assert(dqTest->pop_front() == 1);
-    assert((bool)dqTest->pop_back() == false);
+    assert(dqTest->push_back(1) == "");
+    assert(dqTest->push_front(2) == "error");
+    assert(dqTest->pop_front() == "1");
+    assert(dqTest->pop_back() == "error");
     delete dqTest;
 
     dqTest = new Dequeue(1);
-    assert(dqTest->push_front(1) == true);
-    assert(dqTest->push_back(2) == false);
-    assert(dqTest->pop_back() == 1);
-    assert((bool)dqTest->pop_front() == false);
-    assert(dqTest->push_back(2) == true);
-    assert(dqTest->pop_back() == 2);
+    assert(dqTest->push_front(1) == "");
+    assert(dqTest->push_back(2) == "error");
+    assert(dqTest->pop_back() == "1");
+    assert(dqTest->pop_front() == "error");
+    assert(dqTest->push_back(2) == "");
+    assert(dqTest->pop_back() == "2");
     delete dqTest;
 
     std::cout << "OK deqTest" << "\n";
