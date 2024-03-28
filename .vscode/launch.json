@@ -1,7 +1,6 @@
 {
   "configurations": [
     {
-   
       "name": "(gdb) Launch",
       "type": "cppdbg",
       "request": "launch",
@@ -32,8 +31,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "${fileDirname}",
-      "program": "${fileDirname}/build/Debug/outDebug.exe",
+      "cwd": "c:/tmp/777/cpp_trainings/ya_interview",
+      "program": "c:/tmp/777/cpp_trainings/ya_interview/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
