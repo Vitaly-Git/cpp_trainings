@@ -37,7 +37,9 @@
   "C_Cpp_Runner.warningsAsError": false,
   "C_Cpp_Runner.compilerArgs": [],
   "C_Cpp_Runner.linkerArgs": [],
-  "C_Cpp_Runner.includePaths": [],
+  "C_Cpp_Runner.includePaths": [
+    "/home/vboxuser/boost_1_81_0/"
+  ],
   "C_Cpp_Runner.includeSearch": [
     "*",
     "**/*"
