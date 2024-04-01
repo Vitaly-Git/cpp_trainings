@@ -80,22 +80,22 @@ int sortPlayersTest(){
   VecPlayers players;
   VecPlayers playersAfterSort;
 
-  // players = {
-  //   {"alla", 4, 100},
-  //   {"gena", 4, 1000},
-  //   {"gosha", 4, 90},
-  //   {"rita", 4, 90},
-  //   {"timofey", 4, 80},
-  // };
-  // playersAfterSort = {
-  //   {"alla", 4, 100},
-  //   {"gena", 4, 1000},
-  //   {"gosha", 4, 90},
-  //   {"rita", 4, 90},
-  //   {"timofey", 4, 80},
-  // };
-  // sortPlayers(players);
-  // assert(players == playersAfterSort);
+  players = {
+    {"alla", 4, 100},
+    {"gena", 4, 1000},
+    {"gosha", 4, 90},
+    {"rita", 4, 90},
+    {"timofey", 4, 80},
+  };
+  playersAfterSort = {
+    {"timofey", 4, 80},
+    {"gosha", 4, 90},
+    {"rita", 4, 90},
+    {"alla", 4, 100},
+    {"gena", 4, 1000}
+  };
+  sortPlayers(players);
+  assert(players == playersAfterSort);
 
   players = {
     {"alla", 5, 100},
@@ -105,22 +105,14 @@ int sortPlayersTest(){
     {"timofey", 2, 80},
   };
   playersAfterSort = {
-    {"rita", 1, 90},
-    {"timofey", 2, 80},
-    {"gena", 4, 1000},
+    {"alla", 5, 100},
     {"gosha", 4, 90},
-    {"alla", 5, 100}
+    {"gena", 4, 1000},
+    {"timofey", 2, 80},
+    {"rita", 1, 90}
   };
   sortPlayers(players);
   assert(players == playersAfterSort);
-
-  // players = {
-  //   {"alla", 4, 100},
-  //   {"gena", 6, 1000},
-  //   {"gosha", 2, 90},
-  //   {"rita", 1, 90},
-  //   {"timofey", 5, 80},
-  // };
 
   players = {
     {"rita", 1, 90},
@@ -129,7 +121,6 @@ int sortPlayersTest(){
     {"timofey", 5, 80},
     {"gena", 6, 1000}
   };
-
   playersAfterSort = {
     {"gena", 6, 1000},
     {"timofey", 5, 80},
@@ -208,8 +199,20 @@ PointersPos partitionInPlace(VecPlayers& players, int lhp, int rhp, int pivot) {
       ++lhp;
     else if (players[rhp].taskCount < pivot)
       --rhp;
-    else if ((players[lhp].taskCount == pivot) && (players[rhp].taskCount == pivot)) 
+    else if ((players[lhp].taskCount == pivot) && (players[rhp].taskCount == pivot)) {
+      
+      if (players[lhp].penalty > players[rhp].penalty)
+        std::swap(players[lhp], players[rhp]);  
+      else if (players[lhp].penalty == players[rhp].penalty){
+        if (players[lhp].login > players[rhp].login)
+          std::swap(players[lhp], players[rhp]);  
+      }
+
       --rhp;
+    }
+      
+
+      
     else  
       std::swap(players[lhp], players[rhp]);
   }
