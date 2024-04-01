@@ -1,5 +1,4 @@
 /*
-
 1. Порядок сортировки:
 1.1. При сравнении двух участников выше будет идти тот, у которого решено больше
      задач. 
@@ -15,9 +14,6 @@
    из записей или набора кортежей, которые мы сможем сортировать по полям.
 3. Выберем в качестве хранилища вектор структур, как наиболее понятный и 
    структурирванный.
-
-
-
 */
 
 #include <iostream>
@@ -28,13 +24,8 @@
 
 struct Player{
   std::string login;
-  int64_t taskCount;
-  int64_t penalty;
-};
-
-struct PointersPos{
-  int lhp;
-  int rhp;
+  int taskCount;
+  int penalty;
 };
 
 bool operator==(const Player& lhs, const Player& rhs)
@@ -43,6 +34,11 @@ bool operator==(const Player& lhs, const Player& rhs)
          lhs.taskCount == rhs.taskCount && 
          lhs.penalty == rhs.penalty;
 }
+
+struct PointersPos{
+  int lhp;
+  int rhp;
+};
 
 typedef std::vector<Player> VecPlayers;
 
@@ -57,11 +53,11 @@ int main(){
     return sortPlayersTest();
   #endif
 
-  int64_t n;
+  int n;
   std::cin >> n;
 
   VecPlayers players(n);
-  for (int64_t i=0; i<n; ++i){
+  for (int i=0; i<n; ++i){
     std::cin >> players[i].login;
     std::cin >> players[i].taskCount;
     std::cin >> players[i].penalty;
@@ -69,7 +65,7 @@ int main(){
 
   sortPlayers(players);
 
-  for (int64_t i=0; i<n; ++i)
+  for (int i=0; i<n; ++i)
     std::cout << players[i].login << "\n";
 
   return 0;
@@ -102,7 +98,7 @@ int sortPlayersTest(){
     {"gena", 4, 1000},
     {"gosha", 4, 90},
     {"rita", 1, 90},
-    {"timofey", 2, 80},
+    {"timofey", 2, 80}
   };
   playersAfterSort = {
     {"alla", 5, 100},
@@ -175,17 +171,15 @@ void sortPlayers(VecPlayers& players){
 
 void quickSortInPlace(VecPlayers& players, int lhp, int rhp){
     
-  if (rhp-lhp <= 1)
+  if (rhp-lhp < 1)
       return;
 
-  srand(time(0));
+  // srand(time(0));
   int pivot = players[rand() % (rhp-lhp) + lhp].taskCount;
   PointersPos pPos = partitionInPlace(players, lhp, rhp, pivot);
   
-  //if (pPos.lhp < players.size()-1){
-    quickSortInPlace(players, 0, pPos.lhp);
-    quickSortInPlace(players, pPos.lhp+1, rhp);
-  //}
+  quickSortInPlace(players, 0, pPos.lhp);
+  quickSortInPlace(players, pPos.lhp+1, rhp);
 }
 
 PointersPos partitionInPlace(VecPlayers& players, int lhp, int rhp, int pivot) {
@@ -195,124 +189,57 @@ PointersPos partitionInPlace(VecPlayers& players, int lhp, int rhp, int pivot) {
 
   while (lhp<rhp){
     
+    // Player playerL = players[lhp];
+    // Player playerR = players[rhp];
+
+
+    // if (playerL.taskCount > pivot)
+    //   ++lhp;
+    // else if (playerR.taskCount < pivot)
+    //   --rhp;
+    // else if ((playerL.taskCount == pivot) && (playerR.taskCount == pivot)) {
+      
+    //   if (playerL.penalty > playerR.penalty){
+    //     std::swap(players[lhp], players[rhp]);  
+    //     --rhp;
+    //   }else if (playerL.penalty == playerR.penalty){
+    //     if (playerL.login > playerR.login){
+    //       std::swap(players[lhp], players[rhp]);  
+    //       --rhp;
+    //     }else{
+    //       --rhp; //++lhp;
+    //     }
+    //   } else {
+    //     --rhp; //++lhp;
+    //   }
+
+    // }else  
+    //   std::swap(players[lhp], players[rhp]);
+
+
     if (players[lhp].taskCount > pivot)
       ++lhp;
     else if (players[rhp].taskCount < pivot)
       --rhp;
     else if ((players[lhp].taskCount == pivot) && (players[rhp].taskCount == pivot)) {
       
-      if (players[lhp].penalty > players[rhp].penalty)
+      if (players[lhp].penalty > players[rhp].penalty){
         std::swap(players[lhp], players[rhp]);  
-      else if (players[lhp].penalty == players[rhp].penalty){
-        if (players[lhp].login > players[rhp].login)
+        --rhp;
+      }else if (players[lhp].penalty == players[rhp].penalty){
+        if (players[lhp].login > players[rhp].login){
           std::swap(players[lhp], players[rhp]);  
+          --rhp;
+        }else{
+          --rhp; //++lhp;
+        }
+      } else {
+        --rhp; //++lhp;
       }
 
-      --rhp;
-    }
-      
-
-      
-    else  
+    }else  
       std::swap(players[lhp], players[rhp]);
   }
 
   return {lhp, rhp};
 }
-
-// PointersPos partitionInPlaceOneOrderWork(VecPlayers& players, int lhp, int rhp, int pivot) {
-    
-//   bool lhpStop = false;
-//   bool rhpStop = false;
-
-//   while (lhp<rhp){
-    
-//     if (players[lhp].taskCount > pivot)
-//       ++lhp;
-//     else if (players[rhp].taskCount < pivot)
-//       --rhp;
-//     else if ((players[lhp].taskCount == pivot) && (players[rhp].taskCount == pivot)) 
-//       --rhp;
-//     else  
-//       std::swap(players[lhp], players[rhp]);
-//   }
-
-//   return {lhp, rhp};
-// }
-
-
-
-// PointersPos partitionInPlace(VecPlayers& players, int lhp, int rhp, int pivot) {
-    
-//   bool lhpStop = false;
-//   bool rhpStop = false;
-
-//   while (lhp<rhp){
-    
-//     // if (players[lhp].taskCount < pivot)
-//     //   ++lhp;
-//     // else  
-//     //   lhpStop = true;
-
-//     // if (players[rhp].taskCount > pivot)
-//     //   --rhp;
-//     // else  
-//     //   rhpStop = true;
-
-//     // if (lhpStop && rhpStop){
-//     //   std::swap(players[lhp], players[rhp]);
-//     //   lhpStop = false;
-//     //   rhpStop = false;
-//     // }
-      
-//     if (players[lhp].taskCount < pivot)
-//       ++lhp;
-//     else if (players[rhp].taskCount > pivot)
-//       --rhp;
-//     // else if (players[lhp].taskCount == pivot)
-//     //   ++lhp;
-//     // else if (players[rhp].taskCount == pivot)
-//     //   --rhp;
-//     else if ((players[lhp].taskCount == pivot) && (players[rhp].taskCount == pivot)) 
-//       --rhp;
-//     else  
-//       std::swap(players[lhp], players[rhp]);
-//   }
-
-//   return {lhp, rhp};
-// }
-
-
-// #include <iostream>
-// #include <vector>
-// #include <algorithm>
-
-// std::vector<int> partition(std::vector<int>& array, int pivot) {
-//     std::vector<int> left, center, right;
-//     for (int x : array) {
-//         if (x < pivot) {
-//             left.push_back(x);
-//         } else if (x == pivot) {
-//             center.push_back(x);
-//         } else {
-//             right.push_back(x);
-//         }
-//     }
-//     return {left, center, right};
-// }
-
-// std::vector<int> quicksort(std::vector<int>& array) {
-//     if (array.size() < 2) {
-//         return array;
-//     } else {
-//         int pivot = array[rand() % array.size()];
-//         auto [left, center, right] = partition(array, pivot);
-//         auto sorted_left = quicksort(left);
-//         auto sorted_right = quicksort(right);
-//         std::vector<int> result(sorted_left);
-//         result.insert(result.end(), center.begin(), center.end());
-//         result.insert(result.end(), sorted_right.begin(), sorted_right.end());
-//         return result;
-//     }
-// }
-
