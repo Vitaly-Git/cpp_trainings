@@ -20,7 +20,7 @@
 #include <vector>
 #include <cassert>
 
-//#define UNIT_TESTING
+#define UNIT_TESTING
 
 struct Player{
   std::string login;
@@ -179,6 +179,7 @@ void quickSortInPlace(VecPlayers& players, int lhp, int rhp){
 
   // srand(time(0));
   int pivot = players[rand() % (rhp-lhp) + lhp].taskCount;
+  //int pivot = players[(rhp-lhp)/2 + lhp].taskCount;
   PointersPos pPos = partitionInPlace(players, lhp, rhp, pivot);
   
   quickSortInPlace(players, 0, pPos.lhp);
