@@ -20,7 +20,7 @@
 #include <vector>
 #include <cassert>
 
-#define UNIT_TESTING
+//#define UNIT_TESTING
 
 struct Player{
   std::string login;
@@ -53,6 +53,9 @@ int main(){
     return sortPlayersTest();
   #endif
 
+  std::ios::sync_with_stdio(0);
+  std::cin.tie(0);
+
   int n;
   std::cin >> n;
 
@@ -66,7 +69,7 @@ int main(){
   sortPlayers(players);
 
   for (int i=0; i<n; ++i)
-    std::cout << players[i].login << "\n";
+    std::cout << players[i].login << '\n';
 
   return 0;
 }
