@@ -19,6 +19,7 @@
 #include <iostream>
 #include <vector>
 #include <cassert>
+#include <chrono>
 
 #define UNIT_TESTING
 
@@ -35,17 +36,28 @@ bool operator==(const Player& lhs, const Player& rhs)
          lhs.penalty == rhs.penalty;
 }
 
-struct PointersPos{
-  int lhp;
-  int rhp;
-};
-
 typedef std::vector<Player> VecPlayers;
 
 void sortPlayers(VecPlayers& players);
 int sortPlayersTest();
 void quickSortInPlace(VecPlayers& players, int lhp, int rhp);
-PointersPos partitionInPlace(VecPlayers& players, int lhp, int rhp, int pivot);
+int partitionInPlace(VecPlayers& players, int lhp, int rhp, int pivot);
+
+class TimeSpent{
+  private:
+    std::chrono::system_clock::time_point time_start;
+    std::chrono::system_clock::time_point time_finish;
+
+  public:
+    TimeSpent(){
+      time_start = std::chrono::high_resolution_clock::now();
+    }
+    ~TimeSpent(){
+      time_finish = std::chrono::high_resolution_clock::now();
+      auto time_span = std::chrono::duration_cast<std::chrono::duration<double>>(time_finish - time_start);
+      std::cout << time_span.count() << " seconds\n";
+    }    
+};
 
 int main(){
 
@@ -60,16 +72,28 @@ int main(){
   std::cin >> n;
 
   VecPlayers players(n);
-  for (int i=0; i<n; ++i){
-    std::cin >> players[i].login;
-    std::cin >> players[i].taskCount;
-    std::cin >> players[i].penalty;
+
+  {
+    //TimeSpent ts;
+    for (int i=0; i<n; ++i)
+      std::cin >> players[i].login >> players[i].taskCount >> players[i].penalty;
   }
 
-  sortPlayers(players);
+  {
+    //TimeSpent ts;
+    sortPlayers(players);
+  }
 
-  for (int i=0; i<n; ++i)
-    std::cout << players[i].login << '\n';
+  //std::string playersOut = "";
+
+  {
+    //TimeSpent ts;
+    for (int i=0; i<n; ++i)
+      std::cout << players[i].login << '\n';
+      //playersOut.append(players[i].login).append("\n");
+  }
+
+  //std::cout << playersOut;
 
   return 0;
 }
@@ -78,6 +102,35 @@ int sortPlayersTest(){
 
   VecPlayers players;
   VecPlayers playersAfterSort;
+
+  players = {
+    {"alpyx", 3, 49},
+    {"qly", 62, 28},
+    {"cpbablljhrnlejcwq", 45, 32},
+    {"yusoldfqnjlvwrcruts", 81, 39},
+    {"kzmleudk", 52, 89},
+    {"hpnpszayf", 4, 12},
+    {"ojywnxuyqgmf", 54, 31},
+    {"tvomvisbqrflkghnojt", 49, 79},
+    {"yc", 17, 84},
+    {"k", 16, 14},
+    {"dgmqeqezjgzxfwhcn", 68, 21},
+    {"zdbonelpgmbou", 47, 64},
+    {"ehtxaytzgcsim", 21, 66},
+    {"burbwymmeal", 56, 80},
+    {"wqzynngqasdjj", 8, 15},
+    {"auirlnkhxtmmytr", 23, 14},
+    {"poypocw", 0, 72},
+    {"uf", 40, 68},
+    {"ezfetpflzoi", 0, 30},
+    {"ygegvjzlfgumbo", 80, 33},
+    {"rcwp", 8, 30},
+    {"oaes", 7, 59},
+    {"zgbktifgwvsgesleqclp", 4, 8},
+    {"knzsujegjqmer", 99, 72}
+  };
+  sortPlayers(players);
+  //assert(players == playersAfterSort);
 
   players = {
     {"alla", 4, 100},
@@ -178,62 +231,58 @@ void quickSortInPlace(VecPlayers& players, int lhp, int rhp){
       return;
 
   // srand(time(0));
-  int pivot = players[rand() % (rhp-lhp) + lhp].taskCount;
+  int pivot;
+  if (rhp-lhp > 1)
+    pivot = players[rand() % (rhp-lhp) + lhp].taskCount;
+  else
+    pivot = players[lhp].taskCount;
+
+  //int pivot = players[lhp].taskCount;
   //int pivot = players[(rhp-lhp)/2 + lhp].taskCount;
-  PointersPos pPos = partitionInPlace(players, lhp, rhp, pivot);
+  int newLhp = partitionInPlace(players, lhp, rhp, pivot);
   
-  quickSortInPlace(players, 0, pPos.lhp);
-  quickSortInPlace(players, pPos.lhp+1, rhp);
+  //if (newLhp < (rhp - newLhp+1)){
+    quickSortInPlace(players, lhp, newLhp);
+    quickSortInPlace(players, newLhp+1, rhp);
+  // }else{
+  //   quickSortInPlace(players, newLhp+1, rhp);
+  //   quickSortInPlace(players, 0, newLhp);
+  // }
 }
 
-PointersPos partitionInPlace(VecPlayers& players, int lhp, int rhp, int pivot) {
+int partitionInPlace(VecPlayers& players, int lhp, int rhp, int pivot) {
     
-  bool lhpStop = false;
-  bool rhpStop = false;
-
   while (lhp<rhp){
-    
-    // Player playerL = players[lhp];
-    // Player playerR = players[rhp];
 
+    bool ptrsWasChange = false;
+    Player& playerL = players[lhp];
+    Player& playerR = players[rhp];
 
-    // if (playerL.taskCount > pivot)
-    //   ++lhp;
-    // else if (playerR.taskCount < pivot)
-    //   --rhp;
-    // else if ((playerL.taskCount == pivot) && (playerR.taskCount == pivot)) {
-      
-    //   if (playerL.penalty > playerR.penalty){
-    //     std::swap(players[lhp], players[rhp]);  
-    //     --rhp;
-    //   }else if (playerL.penalty == playerR.penalty){
-    //     if (playerL.login > playerR.login){
-    //       std::swap(players[lhp], players[rhp]);  
-    //       --rhp;
-    //     }else{
-    //       --rhp; //++lhp;
-    //     }
-    //   } else {
-    //     --rhp; //++lhp;
-    //   }
-
-    // }else  
-    //   std::swap(players[lhp], players[rhp]);
-
-
-    if (players[lhp].taskCount > pivot)
+    if (playerL.taskCount > pivot){
       ++lhp;
-    else if (players[rhp].taskCount < pivot)
+      ptrsWasChange = true;
+    }
+
+    if (playerR.taskCount < pivot){
       --rhp;
-    else if ((players[lhp].taskCount == pivot) && (players[rhp].taskCount == pivot)) {
+      ptrsWasChange = true;
+    }
+
+    if (ptrsWasChange)
+      continue;
+
+    if ((playerL.taskCount == pivot) && (playerR.taskCount == pivot)) {
       
-      if (players[lhp].penalty > players[rhp].penalty){
-        std::swap(players[lhp], players[rhp]);  
-        --rhp;
-      }else if (players[lhp].penalty == players[rhp].penalty){
-        if (players[lhp].login > players[rhp].login){
-          std::swap(players[lhp], players[rhp]);  
-          --rhp;
+      if (playerL.penalty > playerR.penalty){
+        //std::swap(playerL, playerR);  
+        std::swap(playerL.login, playerR.login);  
+        std::swap(playerL.penalty, playerR.penalty);  
+        --rhp; //++lhp; //--rhp;
+      }else if (playerL.penalty == playerR.penalty){
+        if (playerL.login > playerR.login){
+          //std::swap(playerL, playerR);  
+          std::swap(playerL.login, playerR.login);
+          --rhp; //++lhp; //--rhp;
         }else{
           --rhp; //++lhp;
         }
@@ -242,8 +291,8 @@ PointersPos partitionInPlace(VecPlayers& players, int lhp, int rhp, int pivot) {
       }
 
     }else  
-      std::swap(players[lhp], players[rhp]);
+      std::swap(playerL, playerR);
   }
 
-  return {lhp, rhp};
+  return lhp;
 }
