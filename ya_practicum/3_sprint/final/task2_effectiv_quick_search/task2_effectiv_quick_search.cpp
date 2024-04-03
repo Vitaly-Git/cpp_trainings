@@ -282,7 +282,7 @@ int partitionInPlace(VecPlayers& players, int lhp, int rhp, int pivot) {
         if (playerL.login > playerR.login){
           //std::swap(playerL, playerR);  
           std::swap(playerL.login, playerR.login);
-          --rhp; //++lhp; //--rhp;
+          --rhp; //++lhp;
         }else{
           --rhp; //++lhp;
         }
