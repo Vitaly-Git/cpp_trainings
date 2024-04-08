@@ -35,36 +35,33 @@ int hashTableTest();
 
 class IHashTable{
     public:
-        virtual void put(int64_t key, int64_t value) = 0;
-        virtual std::variant<int64_t, std::string> get(int64_t key) = 0;
-        virtual std::optional<int64_t> del(int64_t key) = 0;
-        virtual int64_t hashOfKey(int64_t key) = 0;
-        virtual int64_t hashOfBusketByHashOfKey(int64_t hashOfKey) = 0;
+        virtual void put(int32_t key, int32_t value) = 0;
+        virtual std::optional<int32_t> get(int32_t key) = 0;
+        virtual std::optional<int32_t> del(int32_t key) = 0;
+        virtual int32_t hashOfKey(int32_t key) = 0;
+        virtual int32_t hashOfBusketOfKey(int32_t Key) = 0;
+        virtual int32_t hashOfBusketByHashOfKey(int32_t hashOfKey) = 0;
 };
 
 struct KeyValue{
-    int64_t key;
-    int64_t value;
-};
-
-class IConnectedListKeyValue{
-    public:
+    int32_t key;
+    int32_t value;
 };
 
 class ListItem{
     private:
-        int64_t itemValue = 0;
+        KeyValue item = {};
         ListItem* next = nullptr;
     public:
-        ListItem(int64_t newItemValue):itemValue(newItemValue){
+        ListItem(KeyValue newItem):item(newItem){
         }
         ~ListItem(){
         }
-        int64_t getItemValue(){
-            return itemValue;
+        KeyValue getItemValue(){
+            return item;
         }
-        void setItemValue(int64_t newItemValue){
-            itemValue = newItemValue;
+        void setItemValue(KeyValue newItem){
+            item = newItem;
         }
         ListItem* getNext(){
             return next;
@@ -98,37 +95,36 @@ class ConnectedList{
             return last;
         }
 
-        ListItem* getItemByValue(int64_t itemValue){
+        ListItem* getItemByKey(int32_t key){
             ListItem* resulItem = nullptr;
             
             ListItem* next = head;
             while (next!=nullptr){
-                if (next->getItemValue()!=itemValue){
+                if (next->getItemValue().key!=key){
                     resulItem = next;
                     break;
                 }
                 next = next->getNext();
             }
-
             return resulItem;
         }
 
-        void addItem(int64_t newItemValue){
-            ListItem* newListItem = new ListItem(newItemValue);
+        void addItem(KeyValue newItemKeyValue){
+            ListItem* newListItem = new ListItem(newItemKeyValue);
             if (head == nullptr)
                 head = newListItem;
             else    
                 getLastItem()->setNext(newListItem);
         }
 
-        void deleteItem(int64_t itemValue){
+        void deleteItemByKey(int32_t key){
             ListItem* itemToDelete = nullptr;
             
             ListItem* prev = nullptr;
             ListItem* next = head;
 
             while (next!=nullptr){
-                if (next->getItemValue()==itemValue){
+                if (next->getItemValue().key==key){
                     itemToDelete = next;
                     break;
                 }
@@ -163,7 +159,6 @@ class ConnectedList{
             head = curItem;
         }
 
-        // std::string to_string(){
         operator std::string() const{
             
             std::string resultString = "";
@@ -174,7 +169,9 @@ class ConnectedList{
                 if (next != head)
                     resultString.append(" ");
                 
-                resultString.append(std::to_string(next->getItemValue()));
+                resultString.append(std::to_string(next->getItemValue().key));
+                resultString.append(":");
+                resultString.append(std::to_string(next->getItemValue().value));
                 
                 next = next->getNext();
             }
@@ -193,24 +190,28 @@ class HashTable:IHashTable{
             delete hashTable;
         }
 
-        void put(int64_t key, int64_t value) override {
+        void put(int32_t key, int32_t value) override {
 
         };
 
-        std::variant<int64_t, std::string> get(int64_t key) override{
+        std::optional<int32_t> get(int32_t key) override{
 
         };
 
-        std::optional<int64_t> del(int64_t key) override {
+        std::optional<int32_t> del(int32_t key) override {
 
         };
 
-        int64_t hashOfKey(int64_t key) override {
+        int32_t hashOfKey(int32_t key) override {
 
         };
 
-        int64_t hashOfBusketByHashOfKey(int64_t hashOfKey) override {
-            
+        int32_t hashOfBusketOfKey(int32_t key) override {
+
+        };
+
+        int32_t hashOfBusketByHashOfKey(int32_t hashOfKey) override {
+
         };       
     private:
         int hashTableSize;
