@@ -27,25 +27,23 @@
 #include <vector>
 #include <cassert>
 #include <optional>
-#include <variant>
 
 //#define UNIT_TESTING
 
-int hashTableTest();
-
-class IHashTable{
-    public:
-        virtual void put(int32_t key, int32_t value) = 0;
-        virtual std::optional<int32_t> get(int32_t key) = 0;
-        virtual std::optional<int32_t> del(int32_t key) = 0;
-        virtual int32_t hashOfKey(int32_t key) = 0;
-        virtual int32_t hashOfBusketOfKey(int32_t Key) = 0;
-        virtual int32_t hashOfBusketByHashOfKey(int32_t hashOfKey) = 0;
-};
+// int hashTableTest();
 
 struct KeyValue{
     int32_t key;
     int32_t value;
+};
+class IHashTable{
+    public:
+        virtual void put(int32_t key, int32_t value) = 0;
+        virtual std::optional<int32_t> get(int32_t key) = 0;
+        virtual std::optional<KeyValue> del(int32_t key) = 0;
+        virtual int32_t hashOfKey(int32_t key) = 0;
+        virtual int32_t hashOfBusketByKey(int32_t Key) = 0;
+        virtual int32_t hashOfBusketByHashOfKey(int32_t hashKey) = 0;
 };
 
 class ListItem{
@@ -100,7 +98,7 @@ class ConnectedList{
             
             ListItem* next = head;
             while (next!=nullptr){
-                if (next->getItemValue().key!=key){
+                if (next->getItemValue().key==key){
                     resulItem = next;
                     break;
                 }
@@ -117,20 +115,29 @@ class ConnectedList{
                 getLastItem()->setNext(newListItem);
         }
 
-        void deleteItemByKey(int32_t key){
+        std::optional<KeyValue> deleteItemByKey(int32_t key){
             ListItem* itemToDelete = nullptr;
             
             ListItem* prev = nullptr;
             ListItem* next = head;
 
+            KeyValue delValue;
+
             while (next!=nullptr){
                 if (next->getItemValue().key==key){
                     itemToDelete = next;
+                    delValue = {
+                        itemToDelete->getItemValue().key,
+                        itemToDelete->getItemValue().value
+                        };                    
                     break;
                 }
                 prev = next;
                 next = next->getNext();
-            }           
+            }         
+            
+            if (itemToDelete == nullptr)
+                return std::nullopt; 
 
             if (prev == nullptr)
                 head = itemToDelete->getNext();
@@ -138,6 +145,8 @@ class ConnectedList{
                 prev->setNext(itemToDelete->getNext());
 
             delete itemToDelete;
+
+            return delValue;
         }
 
         void reverse(){
@@ -192,36 +201,101 @@ class HashTable:IHashTable{
 
         void put(int32_t key, int32_t value) override {
 
+            KeyValue dataToSave({key, value});
+            ConnectedList* connectedList = getConnectedListPtrFromHashTableByKey(key);
+
+            ListItem* listItem = connectedList->getItemByKey(key);
+            if (listItem == nullptr)
+                connectedList->addItem({key, value});
+            else
+                listItem->setItemValue(dataToSave);
         };
 
         std::optional<int32_t> get(int32_t key) override{
+            ConnectedList* connectedList = getConnectedListPtrFromHashTableByKey(key);
+
+            ListItem* listItem = connectedList->getItemByKey(key);
+            if (listItem == nullptr)
+                return std::nullopt;
+            else
+                return listItem->getItemValue().value;    
 
         };
 
-        std::optional<int32_t> del(int32_t key) override {
-
+        std::optional<KeyValue> del(int32_t key) override {
+            ConnectedList* connectedList = getConnectedListPtrFromHashTableByKey(key);
+            std::optional<KeyValue> delResult = connectedList->deleteItemByKey(key);
+            return delResult;
         };
-
-        int32_t hashOfKey(int32_t key) override {
-
-        };
-
-        int32_t hashOfBusketOfKey(int32_t key) override {
-
-        };
-
-        int32_t hashOfBusketByHashOfKey(int32_t hashOfKey) override {
-
-        };       
+    
     private:
         int hashTableSize;
         std::vector<ConnectedList>* hashTable;
+
+        int32_t hashOfKey(int32_t key) override {
+            int32_t hashKey     = abs(key) % hashTableSize;
+            return hashKey;
+        };
+
+        int32_t hashOfBusketByKey(int32_t key) override {
+            int32_t hashKey     = hashOfKey(key);
+            int32_t hashBuscket = hashKey % hashTableSize;
+            return hashBuscket;
+        };
+
+        int32_t hashOfBusketByHashOfKey(int32_t hashKey) override {
+            int32_t hashBuscket = hashKey % hashTableSize;
+            return hashBuscket;
+        };  
+
+        ConnectedList* getConnectedListPtrFromHashTableByKey(int32_t key){
+            int32_t hashBuscket = hashOfBusketByKey(key);
+            ConnectedList* connectedList = &((*hashTable)[hashBuscket]);
+            return connectedList;
+        }
 }; 
 
 int main(){
 
+    HashTable hashTable;
 
+    int32_t n;
+    std::cin >> n;
 
+    std::string cmd;
+    int32_t key;
+    int32_t value;
+
+    for(int32_t cmdCnt=0; cmdCnt<n; ++cmdCnt){
+
+        std::cin >> cmd;
+
+        if (cmd == "get"){
+
+            std::cin >> key;
+            std::optional<int32_t> optValue = hashTable.get(key);
+            if (optValue == std::nullopt)
+                std::cout << "None" << "\n";
+            else    
+                std::cout << optValue.value() << "\n";
+
+        } else if (cmd == "put"){
+            
+            std::cin >> key >> value;
+            hashTable.put(key, value);
+
+        } else if (cmd == "delete"){
+            
+            std::cin >> key;
+            std::optional<KeyValue> delResult = hashTable.del(key);
+
+             if (delResult == std::nullopt)
+                std::cout << "None" << "\n";
+            else    
+                std::cout << delResult.value().value << "\n";           
+
+        }
+    }
 
     return 0;
 }
