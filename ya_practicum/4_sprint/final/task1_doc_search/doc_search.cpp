@@ -35,21 +35,37 @@ struct DocRelevance{
     int16_t relevance;
 };
 
-//typedef std::priority_queue<WordFrequencyInDoc> WordFrequencyHeap;
+typedef std::priority_queue<WordFrequencyInDoc> WordFrequencyHeap;
 typedef std::unordered_map<int16_t, int16_t> WordFrequencyInDoc; // Doc, Freq
 
 class SearchIndex:ISearchIndex
 {
 public:
     void addDocToIndex(const Doc& doc) override {
-
+        std::map<std::string, int16_t> wordsInDoc;
+        int16_t wordStartPos = 0;
+        int16_t wordEndPos = doc.text.find(" ");
+        
+        while (wordEndPos != -1){
+            std::string word = doc.text.substr(wordStartPos, wordEndPos-wordStartPos+1);
+            ++wordsInDoc[word];
+            wordEndPos = doc.text.find(" ");
+            wordStartPos = wordEndPos + 1;
+            wordEndPos = doc.text.find(" ");
+        }
+        std::string word = doc.text.substr(wordStartPos, doc.text.size()-wordStartPos+1);
+        ++wordsInDoc[word];       
+        
+        for(auto wordFreq : wordsInDoc){
+            wordSearchIndex[wordFreq.first].push({doc.docId, wordsInDoc[word]});
+        }
     };
     std::vector<int16_t> GetSearchResult(std::string req) override {
 
     }
 
 private:
-    std::unordered_map<std::string, WordFrequencyInDoc> wordSearchIndex;
+    std::unordered_map<std::string, WordFrequencyHeap> wordSearchIndex;
     void addWordToIndex(Doc doc){
 
     };
