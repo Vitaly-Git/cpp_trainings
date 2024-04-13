@@ -1,3 +1,10 @@
+/*
+
+
+
+*/
+
+
 #include <iostream>
 #include <unordered_map>
 #include <queue>
@@ -7,6 +14,14 @@
 struct Doc{
     int16_t docId;
     std::string text;
+};
+
+typedef std::vector<Doc> SearchResult;
+
+class ISearchIndex{
+    public:
+        virtual void addDocToIndex(const Doc& doc) = 0;
+        virtual std::vector<int16_t> GetSearchResult(std::string req) = 0; 
 };
 
 struct WordFrequencyInDoc{
@@ -23,12 +38,15 @@ struct DocRelevance{
 //typedef std::priority_queue<WordFrequencyInDoc> WordFrequencyHeap;
 typedef std::unordered_map<int16_t, int16_t> WordFrequencyInDoc; // Doc, Freq
 
-class SearchIndex
+class SearchIndex:ISearchIndex
 {
 public:
-    void addDocToIndex(Doc doc){
+    void addDocToIndex(const Doc& doc) override {
 
     };
+    std::vector<int16_t> GetSearchResult(std::string req) override {
+
+    }
 
 private:
     std::unordered_map<std::string, WordFrequencyInDoc> wordSearchIndex;
@@ -39,7 +57,30 @@ private:
 
 int main(){
 
+    SearchIndex si;
 
+    int16_t n;
+    std::cin >> n;
+
+    std::vector<Doc> docs(n);
+    for(int16_t i=0; i<n; ++i){
+        docs[i].docId = i;
+        std::getline(std::cin, docs[i].text);
+        si.addDocToIndex(docs[i]);
+    }
+
+    int16_t m;
+    std::vector<std::string> reqs(m);
+    for(int16_t i=0; i<m; ++i){       
+        std::getline(std::cin, reqs[i]);
+        std::vector<int16_t> searchResult = si.GetSearchResult(reqs[i]);
+
+        for(auto docNum : searchResult){
+            if (i>0)
+                std::cout << " ";
+            std::cout << docNum;    
+        }
+    }
 
     return 0;
 }
