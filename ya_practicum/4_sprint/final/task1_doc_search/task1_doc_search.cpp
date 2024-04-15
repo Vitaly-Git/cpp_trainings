@@ -1,6 +1,6 @@
 /*
 Ссылка на отчёт в контесте:
-https://contest.yandex.ru/contest/24414/run-report/112001523/
+https://contest.yandex.ru/contest/24414/run-report/112032259/
 
 -- ПРИНЦИП РАБОТЫ --
 1. Принцип работы основан на подсчете частоты слов в исходных документов.
@@ -20,9 +20,13 @@ https://contest.yandex.ru/contest/24414/run-report/112001523/
    обеспечив количественные требования решения задачи.
 -- ВРЕМЕННАЯ СЛОЖНОСТЬ --
 1. Скорость вставки в хэш-таблицу О(1), но для извления слов мы используем поиск слов в цикле, 
-   поэтому, поэтому временная сложность O(N), где N - количество слов. 
-2. Скорость поиска аналогична и равна O(N) только из-за обработки каждого слова. Если мы будем
-   выполнять поиск подготовленных слов, то скорость поиска в хэш-таблице O(1).
+   поэтому временная сложность O(N), где N - количество слов. 
+2. Скорость поиска складывается из нескольких компонентов. Скорость поиска равна O(N) только 
+   из-за обработки каждого слова. Если мы будем выполнять поиск подготовленных слов, 
+   то скорость поиска в хэш-таблице O(1).
+   Так же обязательным компонентом является частичная сортировка, сложность которой N*log(M),
+   где M = middle - first, N = last - first (https://en.cppreference.com/w/cpp/algorithm/partial_sort).
+   В результате максимальная сложность равна O(N)+N*log(M).
 -- ПРОСТРАНСТВЕННАЯ СЛОЖНОСТЬ --
 1. Пространственная сложность равна O(N), где N - количество уникальных слов в документах, 
    т.к. мы храним частоты для каждого слова.
@@ -30,7 +34,6 @@ https://contest.yandex.ru/contest/24414/run-report/112001523/
 
 #include <iostream>
 #include <unordered_map>
-#include <queue>
 #include <vector>
 #include <map>
 #include <algorithm>
@@ -102,10 +105,15 @@ public:
         std::vector<FrequencyInDoc> resultSearchDocsSorting;
         for (auto doc : docsRating)
             resultSearchDocsSorting.push_back((FrequencyInDoc){doc.first, doc.second});
-        std::sort(resultSearchDocsSorting.begin(), resultSearchDocsSorting.end(), FrequencyInDoc::FrequencyInDocPredicate);
+
+        int16_t elementsCountToSort = std::min((int16_t)maxResultRow,(int16_t)resultSearchDocsSorting.size());
+
+        //std::sort(resultSearchDocsSorting.begin(), resultSearchDocsSorting.end(), FrequencyInDoc::FrequencyInDocPredicate);
+        std::partial_sort(resultSearchDocsSorting.begin(), resultSearchDocsSorting.begin()+elementsCountToSort, 
+            resultSearchDocsSorting.end(), FrequencyInDoc::FrequencyInDocPredicate);
 
         // Представляем результат в виде массива
-        for (int16_t i=0; i<std::min((int16_t)maxResultRow,(int16_t)resultSearchDocsSorting.size());++i)
+        for (int16_t i=0; i<elementsCountToSort;++i)
             searchResult.push_back(resultSearchDocsSorting[i].docId+1);
 
         return searchResult;
