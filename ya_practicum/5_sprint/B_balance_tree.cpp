@@ -17,17 +17,21 @@ struct Node {
 
 using namespace std;
 
-void getMaxDepthOfTree(const Node* nood, int &maxDepth, int &minDepth, int &curDepth){
+void getMaxDepthOfTree(const Node* nood, int &maxDepth, int &minDepth, int &curDepth, int &totalDiff){
 
     ++curDepth;
 
     maxDepth = std::max(curDepth, maxDepth);
 
-    if (nood->left != nullptr)
-        getMaxDepthOfTree(nood->left, maxDepth, minDepth, curDepth);
+    if (nood->left != nullptr){
+        getMaxDepthOfTree(nood->left, maxDepth, minDepth, curDepth, totalDiff);
+        ++totalDiff;
+    }
 
-    if (nood->right != nullptr)
-        getMaxDepthOfTree(nood->right, maxDepth, minDepth, curDepth);
+    if (nood->right != nullptr){
+        getMaxDepthOfTree(nood->right, maxDepth, minDepth, curDepth, totalDiff);
+        --totalDiff;
+    }
 
     if (nood->left == nullptr && nood->right == nullptr)
         minDepth = std::min(minDepth, curDepth);
@@ -35,18 +39,24 @@ void getMaxDepthOfTree(const Node* nood, int &maxDepth, int &minDepth, int &curD
     --curDepth;
 };
 
-void getMaxMinDepth(const Node* root, int &maxDepth, int &minDepth){
+void getMaxMinDepth(const Node* root, int &maxDepth, int &minDepth, int &totalDiff){
 
     int curDepth = 0;
-    getMaxDepthOfTree(root, maxDepth, minDepth, curDepth);
+    getMaxDepthOfTree(root, maxDepth, minDepth, curDepth, totalDiff);
 
 };
 
 bool Solution(const Node* root) {
+    
     int maxDepth = 0;
     int minDepth = std::numeric_limits<int>::max();
-    getMaxMinDepth(root, maxDepth, minDepth);
-    return maxDepth - minDepth < 2;
+    int totalDiff = 0;
+    getMaxMinDepth(root, maxDepth, minDepth, totalDiff);
+    //return maxDepth - minDepth < 2;
+
+    bool res = abs(totalDiff) < 2 && maxDepth - minDepth < 2;
+
+    return res;
 } 
 
 
