@@ -78,111 +78,18 @@ bool getMaxMinDepth(const Node* root, int &maxDepth, int &minDepth, int &totalDi
     return result;
 };
 
-
-int getMaxDepth2(const Node* node){
-
-    if (node == nullptr)
-        return 0;
-
-    int leftDepth = getMaxDepth2(node->left);
-    int rightDepth = getMaxDepth2(node->right);
-
-    int maxDepth = max(leftDepth, rightDepth);
-    maxDepth = maxDepth + 1;
-    
-    return maxDepth;
-}
-
-bool isBalancedNode(const Node* node){
-
-    if (node == nullptr)
-        return true;
-
-    if (!isBalancedNode(node->left))
-        return false;
-
-    if (!isBalancedNode(node->right))
-        return false;        
-
-    int maxDepthLeft = getMaxDepth2(node->left);
-    int maxDepthRight = getMaxDepth2(node->right);
-
-    if (abs(maxDepthLeft-maxDepthRight) > 1)
-        return false;
-
-    return true;
-}
-
-bool getChildCount(const Node* node, int &countLeftNodes, int &countRightNodes) {
-    
-    int countLeftNodesWas = countLeftNodes;
-    int countRightNodesWas = countRightNodes;
-
-    bool result = true;
-
-    if (node->left != nullptr){
-        ++countLeftNodes;
-        result = getChildCount(node->left, countLeftNodes, countRightNodes);
-    }
-
-    // if (result == false)
-    //     return false;
-
-    if (node->right != nullptr){
-        ++countRightNodes;
-        result = getChildCount(node->right, countLeftNodes, countRightNodes);
-    }
-
-    // if (result == false)
-    //     return false;
-
-    if (abs(countLeftNodes-countRightNodes) > 1)
-        return false;
-
-    countLeftNodes = countLeftNodesWas;
-    countRightNodes = countRightNodesWas;
-
-    return true;
-} 
-
 bool Solution(const Node* root) {
     
+    int maxDepth = 0;
+    int minDepth = std::numeric_limits<int>::max();
+    int totalDiff = 0;
+    // getMaxMinDepth(root, maxDepth, minDepth, totalDiff);
+    //return maxDepth - minDepth < 2;
 
-    // if (root->left != nullptr)
-    //     getMaxDepthOfTree(root->left)
+    //bool res = abs(totalDiff) < 2 && maxDepth - minDepth < 2;
+    bool res = getMaxMinDepth(root, maxDepth, minDepth, totalDiff);// && abs(totalDiff) < 2;
 
-
-    // bool result = true;
-    // int countLeftNodes = 0;
-    // int countRightNodes = 0;
-    
-    //  if (root->left != nullptr)
-     
-     
-    //  {
-    //     ++countLeftNodes;
-
-
-    //     result = getChildCount(root->left, countLeftNodes, countRightNodes);
-    //  }
-
-    // // if (result == false)
-    // //     return false;
-
-    // if (root->right != nullptr){
-    //     ++countRightNodes;
-    //     result = getChildCount(root->right, countLeftNodes, countRightNodes);
-    // }
-
-    // // if (result == false)
-    // //     return false;
-
-    // if (abs(countLeftNodes-countRightNodes) > 1)
-    //     result = false;
-
-    // return result;
-
-    return isBalancedNode(root);
+    return res;
 } 
 
 
