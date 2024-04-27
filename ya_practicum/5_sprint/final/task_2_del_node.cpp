@@ -14,6 +14,7 @@ struct Node {
 Node* remove(Node* root, int key) {
     // Your code
     // “ヽ(´▽｀)ノ”
+    //
 }
 
 #ifndef REMOTE_JUDGE
