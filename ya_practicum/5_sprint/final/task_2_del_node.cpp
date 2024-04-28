@@ -11,6 +11,10 @@ struct Node {
 #endif
 #include <cassert>
 
+Node* getNextValueNode(Node* root, int key){
+  
+} 
+
 Node* remove(Node* root, int key) {
     // Your code
     // “ヽ(´▽｀)ノ”
