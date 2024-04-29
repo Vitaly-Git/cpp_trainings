@@ -23,20 +23,31 @@ Node* findNode(Node* startNode, int key){
   
 } 
 
+Node* removeNode(Node* root, Node* nodeToRemove){
+
+  Node* minNode = getNextMinNode(nodeToRemove, nodeToRemove->value);
+
+  
+
+}
+
 Node* removeNodeFromTree(Node* root, int key){
 
   Node* nodeToRemove = findNode(root, key);
+  Node* newRoot = nullptr;
 
   if (nodeToRemove == nullptr)
     return root;
 
-  return nodeToRemove;
+  newRoot = removeNode(root, nodeToRemove);
+
+  return newRoot;
 
 };
 
 Node* remove(Node* root, int key) {
     Node* resultNode = root;
-    resultNode = removeNodeFromTree(root, key)
+    resultNode = removeNodeFromTree(root, key);
     return resultNode;
 }
 
