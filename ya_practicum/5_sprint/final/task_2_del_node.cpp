@@ -15,10 +15,29 @@ Node* getNextValueNode(Node* root, int key){
   
 } 
 
+Node* getNextMinNode(Node* startNode, int key){
+  
+} 
+
+Node* findNode(Node* startNode, int key){
+  
+} 
+
+Node* removeNodeFromTree(Node* root, int key){
+
+  Node* nodeToRemove = findNode(root, key);
+
+  if (nodeToRemove == nullptr)
+    return root;
+
+  return nodeToRemove;
+
+};
+
 Node* remove(Node* root, int key) {
-    // Your code
-    // “ヽ(´▽｀)ノ”
-    //
+    Node* resultNode = root;
+    resultNode = removeNodeFromTree(root, key)
+    return resultNode;
 }
 
 #ifndef REMOTE_JUDGE
