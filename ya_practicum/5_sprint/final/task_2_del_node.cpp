@@ -11,35 +11,70 @@ struct Node {
 #endif
 #include <cassert>
 
-Node* getNextValueNode(Node* root, int key){
+struct NodeWithParent{
+  Node* node;
+  Node* parent;
+};
+
+NodeWithParent getNextMinNode(Node* startNode, int key){
   
+  Node* resultNode = nullptr;
+
+  if (startNode->left == nullptr && startNode->right == nullptr){
+    resultNode = nullptr;
+  }else if (startNode->right == nullptr){
+    resultNode = startNode->left;
+  }else{
+    Node* nextGreaterNode = startNode->right;
+    while (nextGreaterNode->left != nullptr){
+      nextGreaterNode = nextGreaterNode->left;
+    }
+    resultNode = nextGreaterNode;
+  }
+
+  return resultNode;
 } 
 
-Node* getNextMinNode(Node* startNode, int key){
-  
+NodeWithParent findNode(Node* startNode, int key){
+
+  //Node* resultNode = nullptr;
+  Node* currentNode = startNode;
+  Node* parentNode = nullptr;
+
+  while(currentNode!=nullptr){
+
+    if (currentNode->value == key){
+      //resultNode = currentNode;
+      break;
+    }else if (currentNode->value > key){
+      currentNode = currentNode->left;
+    }else{
+      currentNode = currentNode->right;
+    }
+
+  }
+
+  return {currentNode, parentNode};
 } 
 
-Node* findNode(Node* startNode, int key){
-  
-} 
+Node* removeNode(Node* root, NodeWithParent& nwpToRemove){
 
-Node* removeNode(Node* root, Node* nodeToRemove){
+  Node* resultNode = nullptr;
 
-  Node* minNode = getNextMinNode(nodeToRemove, nodeToRemove->value);
+  Node* minNode = getNextMinNode(nwpToRemove.node, nwpToRemove.node->value);
 
-  
-
+  return resultNode;
 }
 
 Node* removeNodeFromTree(Node* root, int key){
 
-  Node* nodeToRemove = findNode(root, key);
+  NodeWithParent nwp = findNode(root, key);
   Node* newRoot = nullptr;
 
-  if (nodeToRemove == nullptr)
+  if (nwp.node == nullptr)
     return root;
 
-  newRoot = removeNode(root, nodeToRemove);
+  newRoot = removeNode(root, nwp);
 
   return newRoot;
 
