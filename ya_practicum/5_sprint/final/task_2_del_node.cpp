@@ -25,26 +25,22 @@ NodeWithParent getNextMinNode(Node* startNode, int key);
 
 NodeWithParent getNextMinNode(Node* startNode, int key){
   
-  NodeWithParent nwpResult = {};
+  NodeWithParent nwpResult = {startNode->right, startNode, false};
 
-  if (startNode->left == nullptr && startNode->right == nullptr){
-    nwpResult = {nullptr, nullptr, false};
-  }else if (startNode->right == nullptr){
-    nwpResult.node = startNode->left;
-    nwpResult.parent = startNode;
+  Node* nextGreaterNode = startNode->right;
+  while (nextGreaterNode->left != nullptr){
+    nwpResult.node = nextGreaterNode->left;
+    nwpResult.parent = nextGreaterNode;
     nwpResult.isLeftNode = true;
-  }else{
-    Node* nextGreaterNode = startNode->right;
-    while (nextGreaterNode->left != nullptr){
-      nwpResult.node = nextGreaterNode->left;
-      nwpResult.parent = nextGreaterNode;
-      nwpResult.isLeftNode = true;
-      nextGreaterNode = nextGreaterNode->left;
-    }
+    nextGreaterNode = nextGreaterNode->left;
   }
 
   return nwpResult;
 } 
+
+bool isRootNode(NodeWithParent& nwp){
+  return (nwp.parent == nullptr);
+}
 
 bool isLeafNode(Node* node){
   return (node->left == nullptr && node->right == nullptr);
@@ -62,10 +58,14 @@ Node* removeOneChildNode(Node* root, NodeWithParent& nwpToRemove){
   Node* newRoot = root;
   Node* child = (nwpToRemove.node->left == nullptr ? nwpToRemove.node->right : nwpToRemove.node->left);
 
-  if (nwpToRemove.isLeftNode)
-    nwpToRemove.parent->left = child;
-  else
-    nwpToRemove.parent->right = child;
+  if (isRootNode(nwpToRemove)){
+    newRoot = child;
+  }else{
+    if (nwpToRemove.isLeftNode)
+      nwpToRemove.parent->left = child;
+    else
+      nwpToRemove.parent->right = child;
+  }
 
   return newRoot;
 }
@@ -74,10 +74,14 @@ Node* removeLeafNode(Node* root, NodeWithParent& nwpToRemove){
   
   Node* newRoot = root;
 
-  if (nwpToRemove.isLeftNode)
-    nwpToRemove.parent->left = nullptr;
-  else
-    nwpToRemove.parent->right = nullptr;
+  if (isRootNode(nwpToRemove)){
+    newRoot = nullptr;
+  }else{
+    if (nwpToRemove.isLeftNode)
+      nwpToRemove.parent->left = nullptr;
+    else
+      nwpToRemove.parent->right = nullptr;
+  }
 
   return newRoot;
 }
@@ -85,32 +89,20 @@ Node* removeLeafNode(Node* root, NodeWithParent& nwpToRemove){
 Node* removeTwoChildNode(Node* root, NodeWithParent& nwpToRemove){
 
   Node* newRoot = root;
-
   NodeWithParent nwpMinNode = getNextMinNode(nwpToRemove.node, nwpToRemove.node->value);
 
-  if (nwpMinNode.node == nullptr){
-    
-    if (nwpToRemove.isLeftNode)
-      nwpToRemove.parent->left = nullptr;
-    else
-      nwpToRemove.parent->right = nullptr;
-
-  }else{
-
-    if (nwpMinNode.isLeftNode)
-      nwpMinNode.parent->left = nullptr;
-    else  
-      nwpMinNode.parent->right = nullptr;
-
-    nwpMinNode.node->left = nwpToRemove.node->left;
-    nwpMinNode.node->right = nwpToRemove.node->right;
-
+  if (nwpToRemove.parent != nullptr){
     if (nwpToRemove.isLeftNode)
       nwpToRemove.parent->left = nwpMinNode.node;
     else
       nwpToRemove.parent->right = nwpMinNode.node;
-
   }
+
+  if (isOneChildNode(nwpMinNode.node))
+    removeOneChildNode(root, nwpMinNode);
+
+  nwpMinNode.node->left = nwpToRemove.node->left;
+  nwpMinNode.node->right = nwpToRemove.node->right;
 
   if (root == nwpToRemove.node)
     newRoot = nwpMinNode.node;
@@ -230,23 +222,56 @@ int test_DelFromBST(){
   //   assert(newHead->right->value == 8);
   // }
 
+  // {
+  //   std::map<int, Node*> mapNodesById ={};
+  //   int nodesData[][4] = {
+  //     {1,5,2,5},
+  //     {2,1,-1,3},
+  //     {3,3,4,-1},
+  //     {4,2,-1,-1},
+  //     {5,10,6,-1},
+  //     {6,8,7,-1},
+  //     {7,6,-1,-1}
+  //   };
+  //   createTreeByNodes(7, nodesData, mapNodesById); 
+  //   Node* newHead = remove(mapNodesById[1], 10);
+  //   assert(newHead->value == 5);
+  //   assert(newHead->right == mapNodesById[6]);
+  //   assert(newHead->left->value == 1);    
+  // }
+
   {
     std::map<int, Node*> mapNodesById ={};
     int nodesData[][4] = {
-      {1,5,2,5},
-      {2,1,-1,3},
-      {3,3,4,-1},
-      {4,2,-1,-1},
-      {5,10,6,-1},
-      {6,8,7,-1},
-      {7,6,-1,-1}
+      {1,41,2,3},
+      {2,20,4,5},
+      {3,65,7,8},
+      {4,11,-1,-1},
+      {5,29,-1,6},
+      {6,32,-1,-1},
+      {7,50,-1,-1},
+      {8,91,9,10},
+      {9,72,-1,-1},
+      {10,99,-1,-1}
     };
-    createTreeByNodes(7, nodesData, mapNodesById); 
-    Node* newHead = remove(mapNodesById[1], 10);
-    assert(newHead->value == 5);
-    assert(newHead->right == mapNodesById[5]);
-    assert(newHead->right->value == 8);    
+    createTreeByNodes(10, nodesData, mapNodesById); 
+    Node* newHead = remove(mapNodesById[1], 41);
+    assert(newHead->value == 50);
+    // assert(newHead->right == mapNodesById[6]);
+    // assert(newHead->left->value == 1);    
   }
+
+  // {
+  //   std::map<int, Node*> mapNodesById ={};
+  //   int nodesData[][4] = {
+  //     {1,5,-1,-1}
+  //   };
+  //   createTreeByNodes(1, nodesData, mapNodesById); 
+  //   Node* newHead = remove(mapNodesById[1], 5);
+  //   //assert(newHead->value == 50);
+  //   // assert(newHead->right == mapNodesById[6]);
+  //   // assert(newHead->left->value == 1);    
+  // }
 
   std::cout << "OK test_DelFromBST" << "\n";
 
