@@ -19,7 +19,7 @@ struct NodeWithParent{
 };
 
 Node* removeNodeFromTree(Node* root, int keyToDel);
-Node* removeTwoChildNode(Node* root, NodeWithParent& nwpToRemove);
+Node* removeNode(Node* root, NodeWithParent& nwpToRemove);
 NodeWithParent findNodeFromRoot(Node* root, int key);
 NodeWithParent getNextMinNode(Node* startNode, int key);
 
@@ -82,7 +82,7 @@ Node* removeLeafNode(Node* root, NodeWithParent& nwpToRemove){
   return newRoot;
 }
 
-Node* removeTwoChildNode(Node* root, NodeWithParent& nwpToRemove){
+Node* removeNode(Node* root, NodeWithParent& nwpToRemove){
 
   Node* newRoot = root;
 
@@ -160,7 +160,7 @@ Node* removeNodeFromTree(Node* root, int keyToDel){
   else if (isOneChildNode(nwpToDel.node)) 
     newRoot = removeOneChildNode(root, nwpToDel);
   else
-    newRoot = removeTwoChildNode(root, nwpToDel);
+    newRoot = removeNode(root, nwpToDel);
 
   return newRoot;
 

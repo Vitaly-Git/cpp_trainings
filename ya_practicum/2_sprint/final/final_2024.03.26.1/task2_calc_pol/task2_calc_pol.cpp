@@ -48,7 +48,7 @@ https://contest.yandex.ru/contest/22781/run-report/110498103/
 
 int calculatePolandStringTest();
 int32_t calculatePolandString(const std::string& polStr);
-void processValueString(const std::string& valueStr, std::stack<int32_t>& operands);
+void processValueString(const std::string& valueStr, std::stack<int32_t> operands);
 void getOperandsFromStack(int32_t& operand1, int32_t& operand2, std::stack<int32_t>& operands);
 
 int main(){
