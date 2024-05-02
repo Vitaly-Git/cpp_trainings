@@ -264,8 +264,8 @@ int test_DelFromBST(){
     createTreeByNodes(10, nodesData, mapNodesById); 
     Node* newHead = remove(mapNodesById[1], 41);
     assert(newHead->value == 50);
-    // assert(newHead->right == mapNodesById[6]);
-    // assert(newHead->left->value == 1);    
+    assert(newHead->right->value == 65);
+    assert(newHead->left->value == 20);    
   }
 
   {
