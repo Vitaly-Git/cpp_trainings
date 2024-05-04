@@ -1,3 +1,4 @@
+// https://contest.yandex.ru/contest/24810/run-report/113511793/
 
 #ifndef REMOTE_JUDGE
 struct Node {  
@@ -30,10 +31,7 @@ Node* removeNodeFromTree(Node* root, int& keyToDel);
 
 void getNextMinNode(Node* startNode, int& key, NodeWithParent& nwpMinNode){
   
-  //nwpMinNode = {startNode->right, startNode, false};
-  nwpMinNode.node = startNode->right;
-  nwpMinNode.parent = startNode;
-  nwpMinNode.isLeftNode = false;
+  nwpMinNode = {startNode->right, startNode, false};
 
   Node* nextGreaterNode = startNode->right;
   while (nextGreaterNode->left != nullptr){
@@ -73,9 +71,6 @@ Node* removeOneChildNode(Node* root, NodeWithParent& nwpToRemove){
       nwpToRemove.parent->right = child;
   }
 
-  // if (nwpToRemove.node != nullptr)
-  //   delete(nwpToRemove.node);
-
   return newRoot;
 }
 
@@ -91,9 +86,6 @@ Node* removeLeafNode(Node* root, NodeWithParent& nwpToRemove){
     else
       nwpToRemove.parent->right = nullptr;
   }
-
-  // if (nwpToRemove.node != nullptr)
-  //   delete(nwpToRemove.node);
 
   return newRoot;
 }
@@ -111,7 +103,6 @@ Node* removeTwoChildNode(Node* root, NodeWithParent& nwpToRemove){
       nwpToRemove.parent->right = nwpMinNode.node;
   }
 
-  //if (isOneChildNode(nwpMinNode.node));
   newRoot = removeOneChildNode(root, nwpMinNode);
 
   nwpMinNode.node->left = nwpToRemove.node->left;
@@ -121,9 +112,6 @@ Node* removeTwoChildNode(Node* root, NodeWithParent& nwpToRemove){
     newRoot = nwpMinNode.node;
   else
     newRoot = root;
-
-  // if (nwpToRemove.node != nullptr)
-  //   delete(nwpToRemove.node);
 
   return newRoot;
 }
@@ -311,9 +299,7 @@ int test_DelFromBST(){
     };
     createTreeByNodes(1, nodesData, mapNodesById); 
     Node* newHead = remove(mapNodesById[1], 5);
-    //assert(newHead->value == 50);
-    // assert(newHead->right == mapNodesById[6]);
-    // assert(newHead->left->value == 1);    
+    assert(newHead == nullptr); 
   }
 
   std::cout << "OK test_DelFromBST" << "\n";
