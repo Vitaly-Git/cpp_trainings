@@ -211,7 +211,7 @@ void test() {
 
 int main() {
   
-  // test();
+  test();
 
   #ifndef REMOTE_JUDGE
     #ifdef UNIT_TESTING
