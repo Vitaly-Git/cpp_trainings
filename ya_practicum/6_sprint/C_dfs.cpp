@@ -60,6 +60,7 @@ void startDfsFromVertex(VertexesVector& vertexesVector, int startVertex, Colors&
     // for (int i = 0; i < color.size(); ++i) {
     //     // Перебираем варианты стартовых вершин, пока они существуют.
     //     if (color[i] == "white")
+        std::cout << startVertex << " ";
             Dfs(vertexesVector, color, startVertex); // Запускаем обход, стартуя с i-й вершины.
     // }
 }
@@ -77,10 +78,10 @@ void Dfs(VertexesVector& vertexesVector, Colors& color, int v) { // v - номе
     //for (int w : outgoing_edges(v)) { // Получите список исходящих ребер в зависимости от способа хранения графа
     for (int w : vertexesVector[v].vertexes) { // Получите список исходящих ребер в зависимости от способа хранения графа
         if (color[w] == "white"){ // Если вершина не посещена, то
-            Dfs(vertexesVector, color, w); // запустим обход от найденной смежной вершины.
             std::cout << w << " ";
+            Dfs(vertexesVector, color, w); // запустим обход от найденной смежной вершины.
         }
     }
     color[v] = "black"; // Теперь вершина обработана.
-    std::cout << v;
+    // std::cout << v;
 }
