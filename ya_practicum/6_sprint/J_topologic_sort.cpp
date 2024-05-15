@@ -18,7 +18,7 @@ void topSort(VertexesVector& vertexesVector, Colors& color, int v) {
     color[v] = "gray";
     for (int w : vertexesVector[v].vertexes) {
         if (color[w] == "white") {
-            std::cout << w << " ";
+            // std::cout << w << " ";
             topSort(vertexesVector, color, w);
         }
     }
@@ -62,6 +62,13 @@ int main(){
 
     // startDfsFromVertex(vertexesVector, startVectice, color);
     mainTopSort(vertexesVector, color);
+
+    for (int i=1; i<n+1; ++i){
+        std::cout << vertexesVector[i].vertexCount;
+        for (int j=0; j<vertexesVector[i].vertexes.size(); ++j)
+            std::cout << " " << vertexesVector[i].vertexes[j];
+        std::cout << "\n";
+    }
 
 
     // for (int i=1; i<n+1; ++i){
