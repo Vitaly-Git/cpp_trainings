@@ -27,7 +27,7 @@ void topSort(VertexesVector& vertexesVector, Colors& color, int v) {
 }
 
 void mainTopSort(VertexesVector& vertexesVector, Colors& color) {
-    for (int i = 0; i < vertexesVector.size(); i++) {
+    for (int i = 1; i < vertexesVector.size(); ++i) {
         if (color[i] == "white") {
             topSort(vertexesVector, color, i);
         }
@@ -44,7 +44,7 @@ int main(){
 
     int u,v;
     for (int idxEdge = 0; idxEdge<m; ++idxEdge){
-        std::cin >> u >> v;
+        std::cin >> v >> u;
         ++(vertexesVector[u].vertexCount);
         vertexesVector[u].vertexes.push_back(v);
     }
@@ -63,12 +63,12 @@ int main(){
     // startDfsFromVertex(vertexesVector, startVectice, color);
     mainTopSort(vertexesVector, color);
 
-    for (int i=1; i<n+1; ++i){
-        std::cout << vertexesVector[i].vertexCount;
-        for (int j=0; j<vertexesVector[i].vertexes.size(); ++j)
-            std::cout << " " << vertexesVector[i].vertexes[j];
-        std::cout << "\n";
-    }
+    // for (int i=1; i<n+1; ++i){
+    //     std::cout << vertexesVector[i].vertexCount;
+    //     for (int j=0; j<vertexesVector[i].vertexes.size(); ++j)
+    //         std::cout << " " << vertexesVector[i].vertexes[j];
+    //     std::cout << "\n";
+    // }
 
 
     // for (int i=1; i<n+1; ++i){
