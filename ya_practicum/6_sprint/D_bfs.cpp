@@ -2,6 +2,7 @@
 #include <vector>
 #include <iterator>
 #include <algorithm>
+#include <queue>
 
 struct Vertexes{
     int vertexCount = 0;
@@ -10,6 +11,9 @@ struct Vertexes{
 
 typedef std::vector<std::string> Colors;
 typedef std::vector<Vertexes> VertexesVector;
+
+void bfs(VertexesVector& vertexesVector, int s, Colors& color, 
+    std::vector<int>& previous, std::vector<int>& distance);
 
 int main(){
 
@@ -40,7 +44,12 @@ int main(){
     for(auto it = color.begin(); it!=color.end(); ++it)
         *it = "white";
 
-    startDfsFromVertex(vertexesVector, startVectice, color);
+    std::vector<int> previous(n+1);
+    std::vector<int> distance(n+1);
+
+    //startDfsFromVertex(vertexesVector, startVectice, color);
+
+    bfs(vertexesVector, startVectice, color, previous, distance);
 
     // for (int i=1; i<n+1; ++i){
     //     std::cout << result[i].vertexCount;
@@ -53,21 +62,15 @@ int main(){
 }
 
 
-
-
-
-
-
-
-
 // Длины массивов равны числу вершин |V|.
-vector<string> color = {"white", "white", ...};
-vector<int> previous;
-vector<int> distance;
+//vector<string> color = {"white", "white", ...};
 
-void bfs(int s) {
+
+void bfs(VertexesVector& vertexesVector, int s, Colors& color, 
+    std::vector<int>& previous, std::vector<int>& distance) {
+
     // Создадим очередь вершин и положим туда стартовую вершину.
-    queue<int> planned;
+    std::queue<int> planned;
     planned.push(s);
     color[s] = "gray";
     distance[s] = 0;
@@ -76,7 +79,7 @@ void bfs(int s) {
         int u = planned.front();  // Возьмём вершину из очереди.
         planned.pop();
 
-        for (int v : outgoing_edges(u)) {
+        for (int v : vertexesVector[u].vertexes) {
             if (color[v] == "white") {
                 // Серые и чёрные вершины уже
                 // либо в очереди, либо обработаны.
@@ -86,23 +89,25 @@ void bfs(int s) {
                 planned.push(v);  // Запланируем посещение вершины.
             }
         }
+
+        std::cout << u << " ";
         color[u] = "black";  // Теперь вершина считается обработанной.
     }
 }
 
-vector<int> shortest_path(int v) {
-    // Класть вершины будем в стек, тогда
-    // стартовая вершина окажется наверху стека
-    // и порядок следования от s до v будет соответствовать
-    // порядку извлечения вершин из стека.
-    vector<int> path;
-    int current_vertex = v;
+// vector<int> shortest_path(int v) {
+//     // Класть вершины будем в стек, тогда
+//     // стартовая вершина окажется наверху стека
+//     // и порядок следования от s до v будет соответствовать
+//     // порядку извлечения вершин из стека.
+//     vector<int> path;
+//     int current_vertex = v;
 
-    while (current_vertex != -1) {
-        // Предшественник вершины s равен -1.
-        path.push_back(current_vertex);
-        current_vertex = previous[current_vertex];
-    }
+//     while (current_vertex != -1) {
+//         // Предшественник вершины s равен -1.
+//         path.push_back(current_vertex);
+//         current_vertex = previous[current_vertex];
+//     }
 
-    return path;
-}
+//     return path;
+// }
