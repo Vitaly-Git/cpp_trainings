@@ -2,12 +2,36 @@
 // https://youtu.be/5XEjNWHc_NI?si=VGaepcyE6Iy6nGWg
 // Подумал, что интереснее быдет сделать что-то отличное от лекций
 
-
 #include <iostream>
+#include <map>
+#include <vector>
+#include <algorithm>
+
+std::map<int, int> mapVertexSet;
+
+struct Edge{
+  int vertice1 = 0;
+  int vertice2 = 0;
+  int weight = 0;
+};
+std::vector<Edge> edges; 
 
 int main(){
 
-    
+  int n=0;
+  int m=0;
+  std::cin >> n >> m;
+
+  edges.resize(n);
+
+  int u,v,w;
+  for (int idxEdge = 0; idxEdge<m; ++idxEdge){
+    std::cin >> edges[idxEdge].vertice1 >> edges[idxEdge].vertice2 >> edges[idxEdge].weight;
+    edges[idxEdge].weight = -edges[idxEdge].weight;
+  }
+
+
+
 
 
     return 0;
