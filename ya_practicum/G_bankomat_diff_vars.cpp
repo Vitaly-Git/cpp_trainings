@@ -12,7 +12,16 @@ struct SumByNominals{
     std::int64_t count = 0;
 
     bool operator < (const SumByNominals& rhs) const {
-        return (sum < rhs.sum);
+        if (sum != rhs.sum)
+            return sum < rhs.sum;
+
+        if (nominal != rhs.nominal)
+            return nominal < rhs.nominal;
+
+        if (count != rhs.count)
+            return count < rhs.count;
+
+        return false;    
     };
 };
 
@@ -50,9 +59,6 @@ int main(){
 
                 if (newSum > x)
                     continue;
-                // else if (newSum != x)
-                //     if (calcVarsResult.count(newSum)>0 || CalcVarsTemp.count(newSum)>0) 
-                //         continue; 
 
                 NominalsSet nominalsSet = item.second;
                 

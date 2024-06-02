@@ -2,110 +2,93 @@
 #include <vector>
 #include <algorithm>
 #include <map>
-//#include <unordered_map>
-//#include <multimap>
 #include <set>
 
-struct SumByNominals{
-    std::int64_t sum = 0;
-    std::int64_t nominal = 0;
-    std::int64_t count = 0;
-
-    bool operator < (const SumByNominals& rhs) const {
-        return (sum < rhs.sum);
-    };
-};
-
-typedef std::set<SumByNominals> NominalsSet;
-
-struct SetOfNominals{
-    std::int64_t totalBancnots = 0;
-    NominalsSet nominalsSet;
-};
-
-typedef std::multimap<std::int64_t, NominalsSet> CalcMap;
+typedef int CoupersCount;
+typedef std::multimap<int, CoupersCount> CalcMap;
 
 int main(){
 
-    std::int64_t x, k;
+    int x, k;
     std::cin >> x >> k;
 
-    std::vector<std::int64_t> nominals(k);
-    for(std::int64_t i=0; i<k; ++i)
-        std::cin >> nominals[i];
+    std::set<int> checkDoubles;
 
-    std::sort(nominals.begin(), nominals.end(), [](std::int64_t lhs, std::int64_t rhs){return lhs > rhs;});
+    std::vector<int> nominals;
+    for(int i=0; i<k; ++i){
+        
+        int num;
+        std::cin >> num;
+
+        if (checkDoubles.count(num)>0)
+             continue;
+
+        nominals.push_back(num); 
+        checkDoubles.insert(num);
+    }
+    k = nominals.size();
+
+    std::sort(nominals.begin(), nominals.end(), [](int& lhs, int& rhs){return lhs > rhs;});
 
     CalcMap calcVarsResult;
-    //calcVarsResult[0] = NominalsSet();
-    calcVarsResult.insert({0, NominalsSet()});
+    calcVarsResult.emplace(0, 0);
 
-    for(std::int64_t i=0; i<k; ++i){
+    std::set<int> checkDoubls;
 
-        std::int64_t maxCalsSum = 0;
-        std::int64_t curNominal = 0;
+    for(int i=0; i<k; ++i){
+
+        int maxCalsSum = 0;
+        int curNominal = 0;
         CalcMap CalcVarsTemp;
+        CalcVarsTemp.clear();
+        int newSum = 0;
 
         // Заполним временную таблицу на основе результата
         while (curNominal <= x){
             curNominal += nominals[i];
-            
-            for (auto item : calcVarsResult){
-                std::int64_t curResultSum = item.first;
+            newSum = 0;
 
-                //maxCalsSum = std::max(maxCalsSum, curResultSum + curNominal);
-                if (curResultSum + curNominal > x)
+            for (const auto& item : calcVarsResult){
+                newSum = item.first + curNominal;
+                if (newSum > x)
                     break;
 
-                // if (CalcVarsTemp.count(curResultSum + curNominal)>0)
-                //     continue;
-
-                if ((calcVarsResult.count(curResultSum + curNominal)>0 || CalcVarsTemp.count(curResultSum + curNominal)>0) && 
-                    (curResultSum + curNominal != x))
+                if (newSum == x){
+                    CalcVarsTemp.emplace(newSum, item.second + curNominal / nominals[i]);
+                    break;
+                }else if (checkDoubls.find(newSum)==checkDoubls.end()){
+                     CalcVarsTemp.emplace(newSum, item.second + curNominal / nominals[i]);
+                     checkDoubls.insert(newSum);
+                }
                     
-                    continue;
-
-                NominalsSet nominalsSet = item.second;
-                
-                SumByNominals sumByNominals = {curNominal, nominals[i], curNominal / nominals[i]};
-                nominalsSet.insert(sumByNominals);
-                // CalcVarsTemp[curResultSum + curNominal] = nominalsSet;
-                CalcVarsTemp.insert({curResultSum + curNominal, nominalsSet});                
             }
-
+            if (newSum == x)
+                break;
         }
 
         // Скопируем временную в результат, без замены значений, т.к. идем с больших номиналов
-        for (auto item : CalcVarsTemp){
-            std::int64_t curSum = item.first;
-            NominalsSet nominalsSet = item.second;
-            
-            // if (calcVarsResult.count(curSum)>0)
-            //     continue;
-
-            // calcVarsResult[curSum] = nominalsSet;
-
-            calcVarsResult.insert({curSum, nominalsSet});                
+        for (const auto& item : CalcVarsTemp){
+            int curSum = item.first;
+            CoupersCount coupersCount = item.second;
+            if (curSum == x) {
+                calcVarsResult.emplace(curSum, coupersCount);                
+            } else {
+                if (calcVarsResult.find(newSum)==calcVarsResult.end())
+                    calcVarsResult.emplace(curSum, coupersCount);                
+            }
         }
+        CalcVarsTemp.clear();
 
-        // if (calcVarsResult.count(x)>0){
-        //     std::int64_t resultMinCupCount = 0;
-        //     for (auto sumByNoms : calcVarsResult[x])    
-        //         resultMinCupCount += sumByNoms.count;
-        //     std::cout << resultMinCupCount;
-        //     return 0;
-        // }
     }
 
     if (calcVarsResult.count(x)>0){
-        std::int64_t resultMinCupCount = 0;
-        // for (auto sumByNoms : calcVarsResult[x])    
-        //     resultMinCupCount += sumByNoms.count;
-        // std::cout << resultMinCupCount;
-        return 0;
+        int resultMinCupCount = INT16_MAX;
+        for (auto[itr, rangeEnd] = calcVarsResult.equal_range(x); itr != rangeEnd; ++itr)
+            resultMinCupCount = std::min(resultMinCupCount, itr->second);
+        std::cout << resultMinCupCount;
+    } else {
+        std::cout << -1;
     }
-
-    std::cout << -1;
 
     return 0;
 }
