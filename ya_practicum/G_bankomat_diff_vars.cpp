@@ -17,12 +17,6 @@ struct SumByNominals{
 };
 
 typedef std::set<SumByNominals> NominalsSet;
-
-struct SetOfNominals{
-    std::int64_t totalBancnots = 0;
-    NominalsSet nominalsSet;
-};
-
 typedef std::multimap<std::int64_t, NominalsSet> CalcMap;
 
 int main(){
@@ -52,25 +46,19 @@ int main(){
             
             for (auto item : calcVarsResult){
                 std::int64_t curResultSum = item.first;
+                std::int64_t newSum = curResultSum + curNominal;
 
-                //maxCalsSum = std::max(maxCalsSum, curResultSum + curNominal);
-                if (curResultSum + curNominal > x)
-                    break;
-
-                // if (CalcVarsTemp.count(curResultSum + curNominal)>0)
-                //     continue;
-
-                if ((calcVarsResult.count(curResultSum + curNominal)>0 || CalcVarsTemp.count(curResultSum + curNominal)>0) && 
-                    (curResultSum + curNominal != x))
-                    
+                if (newSum > x)
                     continue;
+                // else if (newSum != x)
+                //     if (calcVarsResult.count(newSum)>0 || CalcVarsTemp.count(newSum)>0) 
+                //         continue; 
 
                 NominalsSet nominalsSet = item.second;
                 
                 SumByNominals sumByNominals = {curNominal, nominals[i], curNominal / nominals[i]};
                 nominalsSet.insert(sumByNominals);
-                // CalcVarsTemp[curResultSum + curNominal] = nominalsSet;
-                CalcVarsTemp.insert({curResultSum + curNominal, nominalsSet});                
+                CalcVarsTemp.insert({newSum, nominalsSet});                
             }
 
         }
@@ -79,33 +67,11 @@ int main(){
         for (auto item : CalcVarsTemp){
             std::int64_t curSum = item.first;
             NominalsSet nominalsSet = item.second;
-            
-            // if (calcVarsResult.count(curSum)>0)
-            //     continue;
-
-            // calcVarsResult[curSum] = nominalsSet;
-
             calcVarsResult.insert({curSum, nominalsSet});                
         }
-
-        // if (calcVarsResult.count(x)>0){
-        //     std::int64_t resultMinCupCount = 0;
-        //     for (auto sumByNoms : calcVarsResult[x])    
-        //         resultMinCupCount += sumByNoms.count;
-        //     std::cout << resultMinCupCount;
-        //     return 0;
-        // }
     }
 
-    if (calcVarsResult.count(x)>0){
-        std::int64_t resultMinCupCount = 0;
-        // for (auto sumByNoms : calcVarsResult[x])    
-        //     resultMinCupCount += sumByNoms.count;
-        // std::cout << resultMinCupCount;
-        return 0;
-    }
-
-    std::cout << -1;
+    std::cout << calcVarsResult.count(x);
 
     return 0;
 }
