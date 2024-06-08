@@ -1,38 +1,32 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <map>
 #include <set>
+#include <vector>
 
+typedef std::vector<int> CalcVector;
 typedef std::set<int> CalcSet;
 
 int main(){
 
-    int n;
+    // Ввод данных
 
+    int n;
     int x, k;
     x = 0;
     std::cin >> k;
 
     int zeroCount = 0;
     int inputValue = 0;
-    std::vector<int> nominals(k);
-    int doubsCount = 0;
-    std::map<int, int> doubs;
+    std::vector<int> nominals;
     for(int i=0; i<k; ++i){
-        
         std::cin >> inputValue;
-        if (inputValue == 0){
-            ++zeroCount;
+        if (inputValue == 0)
             continue;
-        }
-
-
-
-        nominals[i-zeroCount] = inputValue;
-        x += nominals[i-zeroCount];
+        nominals.push_back(inputValue);
+        x += inputValue;
     }
-    k -= zeroCount;
+    k = nominals.size();
 
     if ((x % 2) > 0){
         std::cout << "False";
@@ -41,41 +35,51 @@ int main(){
         x /= 2;
     }
 
-    std::sort(nominals.begin(), nominals.end(), [](int lhs, int rhs){return lhs > rhs;});
+    std::sort(nominals.begin(), nominals.end(), [](int lhs, int rhs){return lhs < rhs;});
 
     CalcSet calcVarsResult;
     calcVarsResult.insert(0);
+    CalcVector CalcVarsTemp;
+    CalcVarsTemp.push_back(0);
+    int curNum = 0;
+
+    CalcSet added;
 
     bool found = false;
-
     for(int i=0; i<k; ++i){
 
-        int maxCalsSum = 0;
-        int curNominal = 0;
-        CalcSet CalcVarsTemp;
-        CalcVarsTemp.clear();
+        int endIndex = CalcVarsTemp.size();
 
-        // Заполним временную таблицу на основе результата
-        curNominal = nominals[i];
-        
-        for (auto curResultSum : calcVarsResult){
-            int newSum = curResultSum + curNominal;
-
+        //CalcVarsTemp.clear();
+        curNum = nominals[i];
+        //for (auto curResultSum : calcVarsResult){
+        for (int j=0; j<endIndex; ++j){
+            int newSum = CalcVarsTemp[j] + curNum;
             if (newSum == x){
                 std::cout << "True";
                 return 0;
             } else if (newSum > x)
                 continue;
+            //CalcVarsTemp.insert(newSum);
+            
+            //if (added.find(newSum) == added.end()){
+                CalcVarsTemp.push_back(newSum);
+                //added.insert(newSum);
+            //}
+                
+        }
 
-            CalcVarsTemp.insert(newSum);
+        if (CalcVarsTemp.size() > 1000000){
+            std::sort( CalcVarsTemp.begin(), CalcVarsTemp.end() );
+            CalcVarsTemp.erase( std::unique( CalcVarsTemp.begin(), CalcVarsTemp.end() ), CalcVarsTemp.end() );
         }
 
         // Скопируем временную в результат, без замены значений, т.к. идем с больших номиналов
-        for (auto item : CalcVarsTemp)
-            calcVarsResult.insert(item);
+        //calcVarsResult.insert(CalcVarsTemp.begin(), CalcVarsTemp.end());
     }
     
-    if (calcVarsResult.count(x) > 0)
+    if (std::find(CalcVarsTemp.begin(), CalcVarsTemp.end(), x) != CalcVarsTemp.end())
+    //if (calcVarsResult.find(x) != calcVarsResult.end())    
         std::cout << "True";
     else
         std::cout << "False";
