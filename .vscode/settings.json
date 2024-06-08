@@ -149,7 +149,8 @@
     "shared_mutex": "cpp",
     "syncstream": "cpp",
     "typeindex": "cpp",
-    "valarray": "cpp"
+    "valarray": "cpp",
+    "cuchar": "cpp"
   },
   "makefile.launchConfigurations": [
     {
