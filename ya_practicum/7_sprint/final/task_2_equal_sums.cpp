@@ -1,88 +1,62 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <set>
-#include <vector>
+// A Dynamic Programming based
+// C++ program to partition problem
+#include <bits/stdc++.h>
+using namespace std;
 
-typedef std::vector<int> CalcVector;
-typedef std::set<int> CalcSet;
+// Returns true if arr[] can be partitioned
+// in two subsets of equal sum, otherwise false
+bool findPartiion(int arr[], int n)
+{
+	int sum = 0;
+	int i, j;
 
-int main(){
+	// Calculate sum of all elements
+	for (i = 0; i < n; i++)
+		sum += arr[i];
 
-    // Ввод данных
+	if (sum % 2 != 0)
+		return false;
 
-    int n;
-    int x, k;
-    x = 0;
-    std::cin >> k;
+	bool part[sum / 2 + 1];
 
-    int zeroCount = 0;
-    int inputValue = 0;
-    std::vector<int> nominals;
-    for(int i=0; i<k; ++i){
-        std::cin >> inputValue;
-        if (inputValue == 0)
-            continue;
-        nominals.push_back(inputValue);
-        x += inputValue;
-    }
-    k = nominals.size();
+	// Initialize the part array
+	// as 0
+	for (i = 0; i <= sum / 2; i++) {
+		part[i] = 0;
+	}
 
-    if ((x % 2) > 0){
-        std::cout << "False";
-        return 0;
-    } else{
-        x /= 2;
-    }
+	// Fill the partition table in bottom up manner
 
-    std::sort(nominals.begin(), nominals.end(), [](int lhs, int rhs){return lhs < rhs;});
+	for (i = 0; i < n; i++) {
+		// the element to be included
+		// in the sum cannot be
+		// greater than the sum
+		for (j = sum / 2; j >= arr[i];
+			j--) { // check if sum - arr[i]
+			// could be formed
+			// from a subset
+			// using elements
+			// before index i
+			if (part[j - arr[i]] == 1 || j == arr[i])
+				part[j] = 1;
+		}
+	}
 
-    CalcSet calcVarsResult;
-    calcVarsResult.insert(0);
-    CalcVector CalcVarsTemp;
-    CalcVarsTemp.push_back(0);
-    int curNum = 0;
+	return part[sum / 2];
+}
 
-    CalcSet added;
+// Driver Code
+int main()
+{
+	int arr[] = { 1, 3, 3, 2, 3, 2 };
+	int n = sizeof(arr) / sizeof(arr[0]);
 
-    bool found = false;
-    for(int i=0; i<k; ++i){
-
-        int endIndex = CalcVarsTemp.size();
-
-        //CalcVarsTemp.clear();
-        curNum = nominals[i];
-        //for (auto curResultSum : calcVarsResult){
-        for (int j=0; j<endIndex; ++j){
-            int newSum = CalcVarsTemp[j] + curNum;
-            if (newSum == x){
-                std::cout << "True";
-                return 0;
-            } else if (newSum > x)
-                continue;
-            //CalcVarsTemp.insert(newSum);
-            
-            //if (added.find(newSum) == added.end()){
-                CalcVarsTemp.push_back(newSum);
-                //added.insert(newSum);
-            //}
-                
-        }
-
-        if (CalcVarsTemp.size() > 1000000){
-            std::sort( CalcVarsTemp.begin(), CalcVarsTemp.end() );
-            CalcVarsTemp.erase( std::unique( CalcVarsTemp.begin(), CalcVarsTemp.end() ), CalcVarsTemp.end() );
-        }
-
-        // Скопируем временную в результат, без замены значений, т.к. идем с больших номиналов
-        //calcVarsResult.insert(CalcVarsTemp.begin(), CalcVarsTemp.end());
-    }
-    
-    if (std::find(CalcVarsTemp.begin(), CalcVarsTemp.end(), x) != CalcVarsTemp.end())
-    //if (calcVarsResult.find(x) != calcVarsResult.end())    
-        std::cout << "True";
-    else
-        std::cout << "False";
-
-    return 0;
+	// Function call
+	if (findPartiion(arr, n) == true)
+		cout << "Can be divided into two subsets of equal "
+				"sum";
+	else
+		cout << "Can not be divided into"
+			<< " two subsets of equal sum";
+	return 0;
 }
