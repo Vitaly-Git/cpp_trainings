@@ -1,12 +1,5 @@
 /*
-  Спасибо за вектор, да!!! Скоректрировал, и использование памяти сократилось больше чем в 3 раза!!!
-  По результатам тестов с 5.5 Мб до 1.63 Мб :)
-
-  Новый отчет: https://contest.yandex.ru/contest/25597/run-report/115087170/
-  Соответственно пространственная сложность уменьшиться, с 
-  O(КолвоБуквВСлове1 * КолвоБуквВСлове2) - для расчета используем матрицу (вектор веторов int).
-  на 
-  O(КолвоБуквВСлове2*2), или O(КолвоБуквВСлове2), т.к. константу исключаем!!!
+https://contest.yandex.ru/contest/25597/run-report/115019499/
 
 -- ПРИНЦИП РАБОТЫ --
 1. Задача оказалась далекой от моей сферы деятельности, поэтому сразу пошел читать.
@@ -49,35 +42,33 @@ int main(){
     std::getline(std::cin, word1);
     std::getline(std::cin, word2);
 
-    // Создадим две переменные для хранения предыдущей и текущей строки
-    std::vector<int> prevRow = std::vector<int>(word2.size()+1);
-    std::vector<int> curRow;
-
+    // Инициализация матрицы расстояний
+    std::vector< std::vector<int> > rowsByWord1(word1.size()+1);
+    for (int i=0; i<=word1.size(); ++i){
+        rowsByWord1[i] = std::vector<int>(word2.size()+1);
+        rowsByWord1[i][0] = i;
+    }
     for (int i=0; i<=word2.size(); ++i)
-        prevRow[i] = i;
-    
+        rowsByWord1[0][i] = i;
+        
     // Расчет матрицы расстояний
     for (int y=1; y<=word1.size(); ++y){
-        curRow = std::vector<int>(word2.size()+1);
-        curRow[0] = y;
-
         for (int x=1; x<=word2.size(); ++x){
             
             int distLocal = 0;
             
-            int leftVal = curRow[x-1] + 1;
-            int leftTopVal = prevRow[x-1] + (word1[y-1] == word2[x-1] ? 0 : 1);
-            int toptVal = prevRow[x] + 1;
+            int leftVal = rowsByWord1[y][x-1] + 1;
+            int leftTopVal = rowsByWord1[y-1][x-1] + (word1[y-1] == word2[x-1] ? 0 : 1);
+            int toptVal = rowsByWord1[y-1][x] + 1;
 
             distLocal = std::min(leftVal, leftTopVal);
             distLocal = std::min(distLocal, toptVal);
 
-            curRow[x] = distLocal;
+            rowsByWord1[y][x] = distLocal;
         }
-        prevRow = curRow;
     }
 
-    std::cout << curRow[word2.size()];
+    std::cout << rowsByWord1[word1.size()][word2.size()];
 
     return 0;
 }
