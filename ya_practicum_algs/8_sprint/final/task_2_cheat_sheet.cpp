@@ -85,6 +85,8 @@ bool isStringConsistFromWords(const str_t& cheatSheet, Node * root){
     
     bool result = false;
 
+    std::vector<int_t> posEnabledForWordBegin(cheatSheet.size());
+
     for (int_t pos = 0; pos < cheatSheet.size(); ++pos){
         
         result = false;
