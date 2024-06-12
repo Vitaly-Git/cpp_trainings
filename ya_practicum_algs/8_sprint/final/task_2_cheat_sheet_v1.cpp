@@ -85,41 +85,52 @@ bool isStringConsistFromWords(const str_t& cheatSheet, Node * root){
     
     bool result = false;
 
-    // Создадим массив для запоминания позиций заверешения предыдущего и начала следующего слова.
-    // Размер "+1", т.к. ставим признак после завершения предыдущего слова.
-    std::vector<int_t> posEnabledForWordBegin(cheatSheet.size()+1);
+    std::vector<int_t> posEnabledForWordBegin(cheatSheet.size());
     posEnabledForWordBegin[0] = 1;
 
-    for (int_t posInCheatSheet = 0; posInCheatSheet < cheatSheet.size(); ++posInCheatSheet){
-
-        bool findPosPreviousWord = (posEnabledForWordBegin[posInCheatSheet]>0);
-
-        if (!findPosPreviousWord)
-            continue;
+    for (int_t pos = 0; pos < cheatSheet.size(); ++pos){
+        
+        result = false;
 
         Node * currentNode = root;        
-        int_t posNextLetter = 0;
+        int_t offset = 0;
 
-        while ((posInCheatSheet + posNextLetter) < cheatSheet.size()){
+        //while ((pos + offset) < cheatSheet.size()){
+        while (pos < cheatSheet.size()){
+            char symbolToFind = cheatSheet[pos + offset];
 
-            int_t letterPosToCheck = posInCheatSheet + posNextLetter;
-            char symbolToCheck = cheatSheet[letterPosToCheck];
+            if (currentNode->childNodes.count(symbolToFind) == 0){
+                if (result == true){
+                    --pos;
+                    break;
+                } else {
+                    return false;
+                }
+            }
+            currentNode = currentNode->childNodes[symbolToFind];
+            if (currentNode->isTerminal){
+                //pos = pos + offset;
+                //result = true;
 
-            if (currentNode->childNodes.count(symbolToCheck) == 0)
-                break;
+                char symbolNext = cheatSheet[pos + 1];
+                if (currentNode->childNodes.count(symbolNext) == 0){
+                    result = true;
+                    break;
+                } else {
+                    result = false;
+                    ++pos;
+                    continue;
+                }
 
-            currentNode = currentNode->childNodes[symbolToCheck];
-            
-            if (currentNode->isTerminal)
-                posEnabledForWordBegin[letterPosToCheck+1] = letterPosToCheck+1;
-
-            ++posNextLetter;
+            } else {
+                result = false;
+            }
+            ++pos;
+            //++offset;
         }
-
+        //pos = pos + offset;
     }
 
-    bool lastPosIsEndOfTheLastWord = (posEnabledForWordBegin[posEnabledForWordBegin.size()-1] > 0);
-
-    return lastPosIsEndOfTheLastWord;
-
+    return result;
+    //return true;
 }
