@@ -1,11 +1,3 @@
-/*
-  Спасибо, исправил :)
-  признаюсь, думал об этом, но сомнивался в реализации, спасибо за подсказку :)
-  Новый отчёт: https://contest.yandex.ru/contest/26133/run-report/115245719/
-  По сложности расчеты прежние, с учетом того, что теперь ориентируемся только на минимальную длину строки,
-  точнее на среднюю, т.к. минимальная определиться только во время декодирования и средний результат
-  будет всё-таки где-то в середине.
-*/
 
 /*
    Ссылка на отчёт в контесте:
@@ -50,7 +42,7 @@ typedef std::vector<str_t> vec_str_t;
 
 str_t maxCommonPrefix(const vec_str_t& strings);
 int_t decodeStrings(const vec_str_t& srcStr, vec_str_t& dstStr);
-void decodeString(const str_t& srcStr, int_t& startPos, str_t& dstStr, int_t strLenToDecode);
+void decodeString(const str_t& srcStr, int_t& startPos, str_t& dstStr);
 str_t maxPrefix(const vec_str_t& srcVecStr, int_t minStrLen);
 
 int main(){
@@ -86,11 +78,11 @@ str_t maxCommonPrefix(const vec_str_t& strings){
 int_t decodeStrings(const vec_str_t& srcVecStr, vec_str_t& dstVecStr){
     
     int_t minStrLen = INT64_MAX;
-
+    
     for (int i=0; i<srcVecStr.size(); ++i){
         str_t newStr;
         int_t startPos = 0;
-        decodeString(srcVecStr[i], startPos, newStr, minStrLen);
+        decodeString(srcVecStr[i], startPos, newStr);
         dstVecStr.push_back(newStr);
         minStrLen = (minStrLen < newStr.size() ? minStrLen : newStr.size());
     }
@@ -98,19 +90,16 @@ int_t decodeStrings(const vec_str_t& srcVecStr, vec_str_t& dstVecStr){
     return minStrLen;
 }
 
-void decodeString(const str_t& srcStr, int_t& startPos, str_t& dstStr, int_t strLenToDecode){
+void decodeString(const str_t& srcStr, int_t& startPos, str_t& dstStr){
 
     if (startPos > srcStr.size()-1)
-        return;
-
-    if (dstStr.size() >= strLenToDecode)    
         return;
 
     char curLetter = srcStr[startPos];
 
     if (curLetter >= '0' && curLetter <= '9'){
         str_t resStr;
-        decodeString(srcStr, ++startPos, resStr, strLenToDecode);
+        decodeString(srcStr, ++startPos, resStr);
         for (int i=0; i<(curLetter-'0');++i)
             dstStr = dstStr + resStr;
     } else if (curLetter == '[') 
@@ -120,7 +109,7 @@ void decodeString(const str_t& srcStr, int_t& startPos, str_t& dstStr, int_t str
     else
         dstStr = dstStr + curLetter;
  
-    decodeString(srcStr, ++startPos, dstStr, strLenToDecode);    
+    decodeString(srcStr, ++startPos, dstStr);    
 }
 
 str_t maxPrefix(const vec_str_t& srcVecStr, int_t minStrLen){
