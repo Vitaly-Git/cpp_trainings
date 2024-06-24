@@ -59,23 +59,53 @@ private:
     int walk_distance_ = 0;
 };
 
+#define TEST_RUN_IN_FUNCTION
+
+// void RunRobots(net::io_context& io) {
+//     Robot r1(io, 1);
+//     Robot r2(io, 2);
+
+//     r1.Rotate(60, [&r1] {
+//         r1.Walk(4, [] {});
+//     });
+//     r2.Walk(2, [&r2] {
+//         r2.Walk(3, [] {});
+//     });
+// }
+
+void RunRobots(net::io_context& io) {
+    auto r1 = std::make_shared<Robot>(io, 1);
+    auto r2 = std::make_shared<Robot>(io, 2);
+
+    r1->Rotate(60, [r1] {
+        r1->Walk(4, [r1] {});
+    });
+    r2->Walk(2, [r2] {
+        r2->Walk(3, [r2] {});
+    });
+} 
+
 int main() {
     net::io_context io;
 
    // Замеряем время начала программы
    const auto start_time = chrono::steady_clock::now();
 
-    Robot r1(io, 1);
-    Robot r2(io, 2);
+    #ifdef TEST_RUN_IN_FUNCTION
+        RunRobots(io);
+    #else
+            Robot r1(io, 1);
+            Robot r2(io, 2);
 
-    // Робот r1 сперва поворачивается на 60 градусов, а потом идёт 4 метра
-    r1.Rotate(60, [&r1] {
-        r1.Walk(4, [] {});
-    });
-    // Робот r2 сперва идёт 2 метра, а потом ещё 3 метра
-    r2.Walk(2, [&r2] {
-        r2.Walk(3, [] {});
-    });
+            // Робот r1 сперва поворачивается на 60 градусов, а потом идёт 4 метра
+            r1.Rotate(60, [&r1] {
+                r1.Walk(4, [] {});
+            });
+            // Робот r2 сперва идёт 2 метра, а потом ещё 3 метра
+            r2.Walk(2, [&r2] {
+                r2.Walk(3, [] {});
+            });
+    #endif
 
     for (;;) {
         try {
