@@ -984,7 +984,12 @@ CMakeFiles/hello.dir/src/main.cpp.o: \
  /home/vboxuser/.conan/data/boost/1.78.0/_/_/package/9bb382e9c85821936d59f1c4ea5134768df38de2/include/boost/asio/detail/base_from_completion_cond.hpp \
  /home/vboxuser/.conan/data/boost/1.78.0/_/_/package/9bb382e9c85821936d59f1c4ea5134768df38de2/include/boost/asio/detail/consuming_buffers.hpp \
  /home/vboxuser/.conan/data/boost/1.78.0/_/_/package/9bb382e9c85821936d59f1c4ea5134768df38de2/include/boost/asio/detail/dependent_type.hpp \
- /usr/include/c++/11/optional \
+ /usr/include/c++/11/optional /usr/include/c++/11/thread \
+ /usr/include/c++/11/stop_token /usr/include/c++/11/bits/std_thread.h \
+ /usr/include/c++/11/semaphore /usr/include/c++/11/bits/semaphore_base.h \
+ /usr/include/c++/11/bits/atomic_timed_wait.h \
+ /usr/include/c++/11/bits/this_thread_sleep.h /usr/include/semaphore.h \
+ /usr/include/x86_64-linux-gnu/bits/semaphore.h \
  /home/vboxuser/.conan/data/boost/1.78.0/_/_/package/9bb382e9c85821936d59f1c4ea5134768df38de2/include/boost/beast/core.hpp \
  /home/vboxuser/.conan/data/boost/1.78.0/_/_/package/9bb382e9c85821936d59f1c4ea5134768df38de2/include/boost/beast/core/detail/config.hpp \
  /home/vboxuser/.conan/data/boost/1.78.0/_/_/package/9bb382e9c85821936d59f1c4ea5134768df38de2/include/boost/core/ignore_unused.hpp \

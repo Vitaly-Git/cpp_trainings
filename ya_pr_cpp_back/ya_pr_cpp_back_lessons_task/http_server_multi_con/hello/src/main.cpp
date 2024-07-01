@@ -5,6 +5,7 @@
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/write.hpp>
 #include <optional>
+#include <thread>
 
 // Boost.Beast будет использовать std::string_view вместо boost::string_view
 #define BOOST_BEAST_USE_STD_STRING_VIEW
@@ -99,7 +100,19 @@ int main() {
         tcp::socket socket(ioc);
         acceptor.accept(socket);
         std::cout << "Connection received"sv << std::endl;
-        HandleConnection(socket);
+        
+        //HandleConnection(socket);
+
+        // Запускаем обработку взаимодействия с клиентом в отдельном потоке
+        std::thread t(
+            // Лямбда-функция будет выполняться в отдельном потоке
+            [](tcp::socket socket) {
+                HandleConnection(socket);
+            },
+            std::move(socket));  // Сокет нельзя скопировать, но можно переместить
+
+        // После вызова detach поток продолжит выполняться независимо от объекта t
+        t.detach();
     }
 
     // constexpr std::string_view response
