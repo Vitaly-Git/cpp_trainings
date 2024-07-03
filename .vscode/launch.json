@@ -31,8 +31,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/vboxuser/projects/c_hello_world/boost/https_client",
-      "program": "/home/vboxuser/projects/c_hello_world/boost/https_client/build/Debug/outDebug",
+      "cwd": "/home/vboxuser/projects/c_hello_world/ya_pr_cpp_back/ya_pr_cpp_back_lessons_task/http_server_multi_con_2/hello/src",
+      "program": "/home/vboxuser/projects/c_hello_world/ya_pr_cpp_back/ya_pr_cpp_back_lessons_task/http_server_multi_con_2/hello/src/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
