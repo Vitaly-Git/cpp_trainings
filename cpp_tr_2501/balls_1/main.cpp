@@ -1,6 +1,11 @@
 #include <iostream>
 #include <vector>
 
+class FieldCellContent{
+public:    
+    virtual void draw() = 0;
+};
+
 enum class BallColor{
     Red,
     Green,
@@ -12,25 +17,45 @@ enum class BallType{
     Ball
 };
 
-class Ball{
+class Ball:public FieldCellContent{
     BallColor color;
     BallType type;
+public:    
+    void draw() override;    
+};
+
+void Ball::draw(){
+
+}
+
+
+class FieldCell{
+    bool IsEmpty = true;
+    FieldCellContent* content = nullptr;
 };
 
 class Field{
 public:    
     Field(Field &other) = delete;
     void operator=(const Field) = delete;
-    static Field* GetField(){
+    static Field* get(){
         if (field_ == nullptr)
             field_ = new Field();
         return field_; 
     }
-    void CreateField(int64_t width, int64_t height){
+    void createEmpty(int64_t width, int64_t height){
         width_ = width;
         height_ = height;
-        balls.clear();
-        balls.reserve(width_*height_);
+        cells.clear();
+        cells.reserve(width_*height_);
+    }
+    void Draw(){
+        for(int64_t h = 0; h < height_; ++h){
+            for(int64_t w = 0; w < width_; ++w){
+                std::cout << "O";
+            }
+            std::cout << "\n";
+        }
     }
 
 private:    
@@ -39,17 +64,17 @@ private:
 
     int64_t width_;
     int64_t height_;
-    std::vector<Ball> balls;
+    std::vector<FieldCell> cells;
 
 };
 Field* Field::field_ = nullptr;
  
 int main(){
-    Field* field = Field::GetField();
+    Field* field = Field::get();
 
-    std::cout << Field::GetField() << std::endl;
+    std::cout << Field::get() << std::endl;
     
-    field->CreateField(8, 8);
+    field->createEmpty(8, 8);
 
-    std::cout << Field::GetField() << std::endl;
+    std::cout << Field::get() << std::endl;
 }
