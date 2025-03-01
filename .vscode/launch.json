@@ -30,9 +30,9 @@
       "request": "launch",
       "args": [],
       "stopAtEntry": false,
-      "externalConsole": false,
-      "cwd": "/home/vboxuser/projects/c_hello_world/ya_pr_cpp_back/ya_pr_cpp_back_lessons_task/http_server_multi_con_2/hello/src",
-      "program": "/home/vboxuser/projects/c_hello_world/ya_pr_cpp_back/ya_pr_cpp_back_lessons_task/http_server_multi_con_2/hello/src/build/Debug/outDebug",
+      "externalConsole": true,
+      "cwd": "c:/Users/vdlvo/source/repos/Vitaly-Git/cpp_trainings/cpp_tr_2501/balls_1",
+      "program": "c:/Users/vdlvo/source/repos/Vitaly-Git/cpp_trainings/cpp_tr_2501/balls_1/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

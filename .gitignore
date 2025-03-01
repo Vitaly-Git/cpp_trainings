@@ -9,3 +9,5 @@ build/Debug/Interval.o
 build/Debug/merge_interval_ya_1.o
 profile
 gmon.out
+/.vs
+CppProperties.json
