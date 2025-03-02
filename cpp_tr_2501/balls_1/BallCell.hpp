@@ -18,8 +18,7 @@ class BallCell : public FieldCellContent {
     BallCellColor color;
     BallCellType type;
 public:
-    void draw(RenderType renderType = RenderType::TERMINAL) override;
-    void renderToText(RenderType renderType = RenderType::TERMINAL) override;
+    std::string renderToText(RenderType renderType = RenderType::TERMINAL) override;
 };
 
 #endif

@@ -1,10 +1,10 @@
-#ifndef _EmptyCell_
-#define _EmptyCell_
+#ifndef _BorderCell_
+#define _BorderCell_
 
 #include <iostream>
 #include "FieldCellContent.hpp"
 
-class EmptyCell : public FieldCellContent {
+class BorderCell : public FieldCellContent {
 public:
     std::string renderToText(RenderType renderType = RenderType::TERMINAL) override;
 };

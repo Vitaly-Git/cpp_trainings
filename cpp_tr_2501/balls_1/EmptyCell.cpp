@@ -1,7 +1,6 @@
 #include <iostream>
 #include "EmptyCell.hpp"
 
-
-void EmptyCell::draw(RenderType renderType){
-    std::cout << "-";
+std::string EmptyCell::renderToText(RenderType renderType){
+    return " ";
 }

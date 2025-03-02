@@ -1,17 +1,12 @@
 #include <iostream>
 #include "BallCell.hpp"
 
-
-void BallCell::renderToText(RenderType renderType) {
-
+std::string BallCell::renderToText(RenderType renderType) {
     if (renderType == RenderType::TERMINAL){
-        std::cout << "O";
+        return "O";
     } else if (renderType == RenderType::HTML){
-        std::cout << "<b> O </b>";
+        return "<b> O </b>";
+    } else {
+        return "";
     }
-
-}
-
-void BallCell::draw(RenderType renderType) {
-    std::cout << renderToText(renderType);
 }

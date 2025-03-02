@@ -5,13 +5,12 @@
 #include "FieldCell.hpp"
 #include "Field.hpp"
 
- 
 int main(){
     Field* field = Field::get();
 
     std::cout << Field::get() << std::endl;
     
-    field->createEmpty(8, 8);
+    field->createEmpty(32, 32);
     field->fillCell(3, 3, new BallCell());
     field->draw();
 

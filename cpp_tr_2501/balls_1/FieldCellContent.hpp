@@ -1,12 +1,13 @@
 #ifndef _FieldCellContent_
 #define _FieldCellContent_
 
+#include <iostream>
 #include "RenderType.hpp"
 
 class FieldCellContent {
 public:
-    virtual void draw(RenderType renderType = RenderType::TERMINAL) = 0;
-    virtual void renderToText(RenderType renderType = RenderType::TERMINAL): std::String = 0;  
+    virtual std::string renderToText(RenderType renderType = RenderType::TERMINAL) = 0;  
+    void draw(RenderType renderType = RenderType::TERMINAL);
 };
 
 #endif
