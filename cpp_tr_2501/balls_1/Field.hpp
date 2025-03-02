@@ -14,7 +14,7 @@ public:
     static Field* get();
     void createEmpty(int64_t width, int64_t height);
     void fillCell(int64_t x, int64_t y, FieldCellContent* CellContent);
-    void draw();
+    void draw(RenderType renderType = RenderType::TERMINAL);
 
 private:    
     Field(){};
